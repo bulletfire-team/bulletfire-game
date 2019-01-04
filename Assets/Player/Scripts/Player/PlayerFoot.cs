@@ -35,6 +35,7 @@ public class PlayerFoot : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         surterre = true;
+        rb.GetComponent<PlayerMovement>().anime.SetBool("InTheAir", false);
         if (enabled)
         {
             rb.GetComponent<PlayerMovement>().PlaySound("Land", 0);
@@ -44,5 +45,6 @@ public class PlayerFoot : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         surterre = false;
+        rb.GetComponent<PlayerMovement>().anime.SetBool("InTheAir", true);
     }
 }

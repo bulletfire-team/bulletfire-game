@@ -60,7 +60,7 @@ public class PlayerInput : NetworkBehaviour
         playerMovement.Rotate(_yR);
 
         // Jump
-        if (Input.GetKey(inputManager.GetKeyCode("jump")))
+        if (Input.GetKeyDown(inputManager.GetKeyCode("jump")))
         {
             playerMovement.Jump();
         }

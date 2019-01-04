@@ -15,7 +15,7 @@ public class Knife : MonoBehaviour {
 
         if(hit.collider.tag == "RedTeam" || hit.collider.tag == "BlueTeam")
         {
-            hit.gameObject.GetComponent<Hitbox>().GetDammages(damage, netIdPlayer, transform.position);
+            hit.gameObject.GetComponent<Hitbox>().GetDammages(damage, netIdPlayer, transform.position, 3);
         }
     }
 }

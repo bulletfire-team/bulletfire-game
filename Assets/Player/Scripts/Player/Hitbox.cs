@@ -11,7 +11,7 @@ public class Hitbox : MonoBehaviour {
 	public NetworkPlayer player;
 	public bodypart part;
 
-	public int GetDammages (int dam, string killerNetId, Vector3 pos) {
+	public int GetDammages (int dam, string killerNetId, Vector3 pos, int type) {
 		float newDam = dam;
 		switch(part){
 			case bodypart.head :
@@ -28,6 +28,6 @@ public class Hitbox : MonoBehaviour {
 				break;
 		}
 
-		return player.GetDammages((int)newDam, killerNetId, pos);
+		return player.GetDammages((int)newDam, killerNetId, pos, type);
 	}
 }

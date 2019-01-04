@@ -136,7 +136,7 @@ public class PlayerWeapon : NetworkBehaviour
         {
             if(hit.collider.tag == "RedTeam" || hit.collider.tag == "BlueTeam")
             {
-                int touch = hit.collider.gameObject.GetComponent<Hitbox>().GetDammages(playerAtributes.weaponManager.GetDammages(curWeapon.weapon.index), GetComponent<NetworkIdentity>().netId.ToString(), transform.position);
+                int touch = hit.collider.gameObject.GetComponent<Hitbox>().GetDammages(playerAtributes.weaponManager.GetDammages(curWeapon.weapon.index), GetComponent<NetworkIdentity>().netId.ToString(), transform.position, 1);
                 if(touch == 1)
                 {
                     RpcHitPlayer(hit.point, 1);

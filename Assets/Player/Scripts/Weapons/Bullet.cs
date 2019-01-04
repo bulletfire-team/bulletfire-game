@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision other){
 		if(other.gameObject.tag == ennemyTag){
-            other.gameObject.GetComponent<Hitbox>().GetDammages(dammages, netIdPlayer, transform.position) ;
+            other.gameObject.GetComponent<Hitbox>().GetDammages(dammages, netIdPlayer, transform.position,1) ;
         }
         else
         {

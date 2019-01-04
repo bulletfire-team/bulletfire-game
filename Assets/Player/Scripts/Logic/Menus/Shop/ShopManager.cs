@@ -242,4 +242,9 @@ public class ShopManager : MonoBehaviour
     }
     #endregion
 
+    public void BuyCredits ()
+    {
+        Application.OpenURL("https://iutlyon1-ptut-robotscompagnons.alwaysdata.net/shop");
+    }
+
 }

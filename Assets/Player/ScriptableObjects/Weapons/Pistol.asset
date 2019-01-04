@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -14,7 +15,7 @@ MonoBehaviour:
   type: 1
   weapName: Pistol
   dammages: 20
-  bullet: {fileID: 54276348783466428, guid: 95a11502432fea64d815c4f2ba8add7c, type: 2}
+  bullet: {fileID: 54276348783466428, guid: 95a11502432fea64d815c4f2ba8add7c, type: 3}
   bulletSpeed: 100
   fireRate: 0.7
   range: 300
@@ -68,9 +69,9 @@ MonoBehaviour:
   - 0.31
   shotSound: 0
   reloadSound: 0
-  image: {fileID: 21300000, guid: a3f0ef7ab67bf4f4c8be934e632ad3b5, type: 3}
+  image: {fileID: 21300000, guid: 27da0dfa6b3b632499e0d739909e0741, type: 3}
   equipments: []
   weaponPrefab: {fileID: 1306523742124632, guid: 09cbb4c2e64d4b14aa9a2b7721d5fd01,
-    type: 2}
+    type: 3}
   skins: []
   skinsPrice: 

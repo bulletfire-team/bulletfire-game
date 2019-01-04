@@ -37,7 +37,7 @@ public class Grenade : MonoBehaviour {
             NetworkPlayer o = other.GetComponent<NetworkPlayer>();
             if (o!= null)
             {
-                o.GetDammages(dammages, netIdPlayer, transform.position);
+                o.GetDammages(dammages, netIdPlayer, transform.position, 2);
             }
         }
     }

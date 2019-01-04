@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
             if (playerFoot.Jump())
             {
                 audioManager.CmdPlay("Jump", 0);
+                anime.SetTrigger("Jump");
             }
         }
     }

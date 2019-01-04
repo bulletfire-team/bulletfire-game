@@ -28,7 +28,8 @@ public class NetworkPlayer : NetworkBehaviour {
 
     public PlayerUI playerUI;
 
-    public Transform skin;
+    public Transform skin1;
+    public Transform skin2;
 
 
     IEnumerator Start () {
@@ -40,6 +41,7 @@ public class NetworkPlayer : NetworkBehaviour {
         if(isServer) GameManager.instance.RegisterPlayer(GetComponent<NetworkIdentity>().netId.ToString(), GetComponent<Player>());
         if (isLocalPlayer){
             came.SetActive(true);
+            skin1.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             int skin = GameObject.Find("ItemManager").GetComponent<ItemManager>().GetSkin(0);
             CmdSpawnWeap(0, true, skin);
@@ -73,9 +75,10 @@ public class NetworkPlayer : NetworkBehaviour {
         firstRot = transform.rotation;
     }
 
-	public int GetDammages(int dam, string killerNetId, Vector3 pos){
+	public int GetDammages(int dam, string killerNetId, Vector3 pos, int type){
 		if(!isServer) return 0;
         if (health <= 0) return 0;
+        if (killerNetId == GetComponent<NetworkIdentity>().netId.ToString() && type == 1) return 0;
         health -= dam;
         if(health <= 0){
             if (isAlive)
@@ -165,8 +168,9 @@ public class NetworkPlayer : NetworkBehaviour {
     [ClientRpc]
     public void RpcChangeSkin (int skin)
     {
-        Material mat = GameObject.Find("Server").GetComponent<Server>().characterSkins[skin];
-        this.skin.GetComponent<Renderer>().material = mat;
+        //Material mat = GameObject.Find("Server").GetComponent<Server>().characterSkins[skin];
+        //this.skin1.GetComponent<Renderer>().material = mat;
+        //this.skin2.GetComponent<Renderer>().material = mat;
     }
 
     public void Respawn (bool isStart = false)

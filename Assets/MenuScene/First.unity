@@ -157,7 +157,7 @@ PrefabInstance:
     - target: {fileID: 224577677253899712, guid: 8249d718d496ce848898706b15329ea7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 224577677253899712, guid: 8249d718d496ce848898706b15329ea7,
         type: 3}
@@ -335,7 +335,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: d58f1eda8ea4ab44690f98bd127503e0, type: 3}
   - {fileID: 2800000, guid: eadcf7daf88f0104180e1e3c3a26f762, type: 3}
   skinPrice: 00000000e8030000d0070000b80b0000a00f0000
-  vcURL: http://51.254.95.174/checkversion.php
+  vcURL: http://51.254.95.174/launcherapp/checkversion
   versionIdentifier: 704e9fb9-6d6c-401c-b129-6789bfecdd10
 --- !u!4 &141381025
 Transform:

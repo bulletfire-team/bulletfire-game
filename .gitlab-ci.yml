@@ -1,4 +1,4 @@
-image: "gableroux/unity3d:2018.3.0f2"
+image: "gableroux/unity3d:2018.3.0f2-windows"
 
 stages:
 - test
@@ -10,6 +10,7 @@ variables:
 
 .unity_before_script: &unity_before_script
   before_script:
+  - echo $UNITY_LICENSE_CONTENT
   - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 #.test: &test
@@ -41,15 +42,15 @@ variables:
     paths:
     - ./Builds/
 
-build-StandaloneLinux64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneLinux64
+#build-StandaloneLinux64:
+#  <<: *build
+#  variables:
+#    BUILD_TARGET: StandaloneLinux64
 
-build-StandaloneOSX:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneOSX
+#build-StandaloneOSX:
+#  <<: *build
+#  variables:
+#    BUILD_TARGET: StandaloneOSX
 
 build-StandaloneWindows64:
   <<: *build
