@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Global")]
     public Animator anime;
     public MyNetworkAnimator weapAnim;
+    public MyNetworkAnimator2 globalAnim;
 
     [Header("Movement")]
     public float walkSpeed = 5f;
@@ -106,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 audioManager.CmdPlay("Jump", 0);
                 anime.SetTrigger("Jump");
+                weapAnim.CmdSetTrigger("Jump");
             }
         }
     }
@@ -117,6 +119,7 @@ public class PlayerMovement : MonoBehaviour
             isCrouch = true;
             anime.SetBool("Crouch", true);
             weapAnim.CmdSetBool("Crouch", true);
+            globalAnim.CmdSetBool("IsCrouch", true);
             speed = crouchSpeed;
         }
         else
@@ -124,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
             isCrouch = false;
             anime.SetBool("Crouch", false);
             weapAnim.CmdSetBool("Crouch", false);
+            globalAnim.CmdSetBool("IsCrouch", false);
             speed = walkSpeed;
         }
         audioManager.CmdPlay("Crouch", 0);

@@ -58,6 +58,9 @@ public class PlayerWeapon : NetworkBehaviour
     [SyncVar(hook="OnCut")]
     public bool isCutting = false;
 
+    [SyncVar(hook = "OnThrow")]
+    public bool isThrowing = false;
+
     void Start()
     {
         playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
@@ -209,13 +212,13 @@ public class PlayerWeapon : NetworkBehaviour
 
     IEnumerator waitCutRate()
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.25f);
         knife.SetActive(true);
         knife.GetComponent<Knife>().ennemyTag = ennemyTeam;
         knife.GetComponent<Knife>().netIdPlayer = GetComponent<NetworkIdentity>().netId.ToString();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         knife.SetActive(false);
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.25f);
         canShot = true;
         canCut = true;
         ik.leftHandObj = curLeftIk;
@@ -232,7 +235,7 @@ public class PlayerWeapon : NetworkBehaviour
                 nbGrenade--;
                 playerUI.grenades[nbGrenade].SetActive(false);
                 canLaunchGrenade = false;
-                StartCoroutine(waitGrenade());
+                weapManagerAnim.CmdSetTrigger("Grenade");
                 CmdLaunchGrenade();
             }
         }
@@ -241,17 +244,37 @@ public class PlayerWeapon : NetworkBehaviour
     [Command]
     public void CmdLaunchGrenade ()
     {
-        GameObject go = Instantiate(grenadePrefab, launchPlace.position, Quaternion.identity);
-        go.GetComponent<Rigidbody>().velocity = launchPlace.TransformDirection(Vector3.forward) * grenadeForce;
-        NetworkServer.Spawn(go);
-        go.GetComponent<Grenade>().ennemyTag = ennemyTeam;
-        go.GetComponent<Grenade>().netIdPlayer = GetComponent<NetworkIdentity>().netId.ToString();
+        isThrowing = !isThrowing;
+        OnThrow(true);
     }
+
+    public void OnThrow (bool throwi)
+    {
+        curLeftIk = ik.leftHandObj;
+        ik.leftHandObj = cutLeftIk;
+        StartCoroutine(waitGrenade());
+    } 
 
     IEnumerator waitGrenade ()
     {
-        yield return new WaitForSeconds(1.5f);
-        canLaunchGrenade = true;
+        if(isServer)
+        {
+            yield return new WaitForSeconds(0.5f);
+            GameObject go = Instantiate(grenadePrefab, launchPlace.position, Quaternion.identity);
+            go.GetComponent<Rigidbody>().velocity = launchPlace.TransformDirection(Vector3.forward) * grenadeForce;
+            NetworkServer.Spawn(go);
+            go.GetComponent<Grenade>().ennemyTag = ennemyTeam;
+            go.GetComponent<Grenade>().netIdPlayer = GetComponent<NetworkIdentity>().netId.ToString();
+            yield return new WaitForSeconds(0.5f);
+            canLaunchGrenade = true;
+            ik.leftHandObj = curLeftIk;
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            canLaunchGrenade = true;
+            ik.leftHandObj = curLeftIk;
+        }
     }
     #endregion
 

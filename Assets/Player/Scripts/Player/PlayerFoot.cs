@@ -36,6 +36,7 @@ public class PlayerFoot : MonoBehaviour
     {
         surterre = true;
         rb.GetComponent<PlayerMovement>().anime.SetBool("InTheAir", false);
+        rb.GetComponent<PlayerMovement>().weapAnim.CmdSetBool("InTheAir", false);
         if (enabled)
         {
             rb.GetComponent<PlayerMovement>().PlaySound("Land", 0);
@@ -46,5 +47,6 @@ public class PlayerFoot : MonoBehaviour
     {
         surterre = false;
         rb.GetComponent<PlayerMovement>().anime.SetBool("InTheAir", true);
+        rb.GetComponent<PlayerMovement>().weapAnim.CmdSetBool("InTheAir", true);
     }
 }
