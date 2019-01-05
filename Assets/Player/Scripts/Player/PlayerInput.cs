@@ -6,6 +6,7 @@ public class PlayerInput : NetworkBehaviour
 
     private PlayerMovement playerMovement;
     private PlayerWeapon playerWeapon;
+    private PlayerEmote playerEmote;
 
     private InputManager inputManager;
 
@@ -18,6 +19,7 @@ public class PlayerInput : NetworkBehaviour
         if (!isLocalPlayer) enabled = false;
         playerMovement = GetComponent<PlayerMovement>();
         playerWeapon = GetComponent<PlayerWeapon>();
+        playerEmote = GetComponent<PlayerEmote>();
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
     }
 
@@ -123,6 +125,12 @@ public class PlayerInput : NetworkBehaviour
         if (Input.GetKeyDown(inputManager.GetKeyCode("weap2")))
         {
             playerWeapon.SwitchWeaponIndex(1);
+        }
+
+        // Emotes
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            playerEmote.PlayEmote(0);
         }
     }
 }

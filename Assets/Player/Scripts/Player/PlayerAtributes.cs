@@ -26,8 +26,20 @@ public class PlayerAtributes : NetworkBehaviour
     [Header("UI")]
     public TMP_Text pseudoTxt;
 
+    public ItemsContainer itemsContainer;
+
+    public Animator playerAnimator;
+    public GameObject weapons;
+    public GameObject skinBody;
+    public GameObject skinArms;
+    public Animator globalAnimator;
+    public Animator weapAnimator;
+    public IK ik;
+    public GameObject emoteCamera;
+
     private void Start()
     {
+        itemsContainer = GameObject.Find("Items").GetComponent<ItemsContainer>();
         if(isLocalPlayer)
         {
             lifeBar.SetActive(false);

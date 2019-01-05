@@ -39,6 +39,7 @@ public class NetworkWeapon : NetworkBehaviour
         }
         if (isFirst) transform.SetAsFirstSibling();
         if (!isFirst) transform.SetAsLastSibling();
-        if (isFirst) parentObj.GetComponent<PlayerWeapon>().OnSwitchWeapon(0);
+        if (!isFirst) gameObject.SetActive(false);
+        parentObj.GetComponent<PlayerWeapon>().OnSwitchWeapon(0);
     }
 }

@@ -61,6 +61,9 @@ public class PlayerWeapon : NetworkBehaviour
     [SyncVar(hook = "OnThrow")]
     public bool isThrowing = false;
 
+    [SyncVar(hook = "OnReload")]
+    public bool isReload = false;
+
     void Start()
     {
         playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
@@ -354,19 +357,25 @@ public class PlayerWeapon : NetworkBehaviour
     #region Reload
     public void Reload()
     {
-        if (curWeapon.curLoader < curWeapon.weapon.maxLoader)
+        if(curWeapon.curAmmo > 0)
         {
-            if (curWeapon.curAmmo >= curWeapon.weapon.maxLoader - curWeapon.curLoader)
+            if (curWeapon.curLoader < curWeapon.weapon.maxLoader)
             {
-                curWeapon.curAmmo -= curWeapon.weapon.maxLoader - curWeapon.curLoader;
-                curWeapon.curLoader = curWeapon.weapon.maxLoader;
-            }
-            else
-            {
-                curWeapon.curLoader += curWeapon.curAmmo;
-                curWeapon.curAmmo = 0;
+                CmdReload();
+                StartCoroutine(waitReload());
             }
         }
+    }
+
+    public void CmdReload()
+    {
+        isReload = !isReload;
+        OnReload(true);
+    }
+
+    public void OnReload (bool re)
+    {
+        curWeapon.anim.Play();
     }
 
     void EndReload()
@@ -374,6 +383,21 @@ public class PlayerWeapon : NetworkBehaviour
         canShot = true;
         isReloading = false;
         UIWeap();
+        curWeapon.anim.Stop();
+    }
+
+    void ReloadSuccess ()
+    {
+        if (curWeapon.curAmmo >= curWeapon.weapon.maxLoader - curWeapon.curLoader)
+        {
+            curWeapon.curAmmo -= curWeapon.weapon.maxLoader - curWeapon.curLoader;
+            curWeapon.curLoader = curWeapon.weapon.maxLoader;
+        }
+        else
+        {
+            curWeapon.curLoader += curWeapon.curAmmo;
+            curWeapon.curAmmo = 0;
+        }
     }
 
     IEnumerator waitReload()
@@ -382,7 +406,7 @@ public class PlayerWeapon : NetworkBehaviour
         canShot = false;
         audioManager.CmdPlay("Reload", curWeapon.weapon.reloadSound);
         yield return new WaitForSeconds(curWeapon.weapon.reloadTime);
-        Reload();
+        ReloadSuccess();
         EndReload();
     }
     #endregion

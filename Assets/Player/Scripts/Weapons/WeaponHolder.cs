@@ -14,10 +14,13 @@ public class WeaponHolder : MonoBehaviour {
     public Transform leftIK;
     public Transform rightIK;
 
+    public Animation anim;
+
     private void Start()
     {
         curAmmo = weapon.maxAmmo;
         curLoader = weapon.maxLoader;
+        anim = GetComponent<Animation>();
     }
 
     public void NewRound (TMPro.TMP_Text ammo)
