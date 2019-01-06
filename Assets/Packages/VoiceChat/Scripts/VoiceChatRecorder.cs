@@ -183,11 +183,9 @@ namespace VoiceChat
             {
                 transmitToggled = !transmitToggled;
             }
-            Debug.Log("Recording ...");
             bool transmit = transmitToggled || Input.GetKey(pushToTalkKey);
             int currentPosition = Microphone.GetPosition(Device);
 
-            if (transmit) Debug.Log("Transmitting ...");
             // This means we wrapped around
             if (currentPosition < previousPosition)
             {

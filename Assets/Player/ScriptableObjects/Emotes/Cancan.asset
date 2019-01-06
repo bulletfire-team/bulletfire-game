@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: 555150b7ec5e4204f89cf8160f0136a6, type: 2}
   icon: {fileID: 0}
   name: Cancan
+  index: 5
+  buyable: 0
+  price: 0

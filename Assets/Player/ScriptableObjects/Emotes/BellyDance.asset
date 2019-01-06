@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: 74c5a14ac340195478b1b66c0acd5709, type: 2}
   icon: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   name: Belly dance
+  index: 1
+  buyable: 0
+  price: 0

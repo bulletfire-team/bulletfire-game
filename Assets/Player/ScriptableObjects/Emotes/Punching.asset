@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: e83734ff39be2c8478f4558ee60b862b, type: 2}
   icon: {fileID: 0}
   name: Punching
+  index: 17
+  buyable: 1
+  price: 1000

@@ -6,13 +6,18 @@ public class ItemManager : MonoBehaviour {
     public List<WeaponSkinItem> weaponSkinItems = new List<WeaponSkinItem>();
 
     public int characterSkin = 0;
+
+    [Header("Emote")]
+    public int[] emotes;
     
 
     void Start () {
         GetWeaponSkin();
         GetCharacterSkin();
+        GetEmotes();
 	}
 
+    #region Character Skin
     private void GetCharacterSkin ()
     {
         if (PlayerPrefs.HasKey("CharacterSkin"))
@@ -26,7 +31,9 @@ public class ItemManager : MonoBehaviour {
         characterSkin = skin;
         PlayerPrefs.SetInt("CharacterSkin", characterSkin);
     }
+    #endregion
 
+    #region Weapon skin
     private void GetWeaponSkin ()
     {
         if (PlayerPrefs.HasKey("WeaponSkin"))
@@ -65,6 +72,38 @@ public class ItemManager : MonoBehaviour {
         }
         SaveWeaponSkin();
     }
+    #endregion
+
+    #region Emotes
+    private void GetEmotes ()
+    {
+        if (PlayerPrefs.HasKey("Emote1"))
+        {
+            emotes[0] = PlayerPrefs.GetInt("Emote1");
+        }
+        if (PlayerPrefs.HasKey("Emote2"))
+        {
+            emotes[1] = PlayerPrefs.GetInt("Emote2");
+        }
+        if (PlayerPrefs.HasKey("Emote3"))
+        {
+            emotes[2] = PlayerPrefs.GetInt("Emote3");
+        }
+        if (PlayerPrefs.HasKey("Emote4"))
+        {
+            emotes[3] = PlayerPrefs.GetInt("Emote4");
+        }
+    }
+
+    public void SaveEmotes ()
+    {
+        PlayerPrefs.SetInt("Emote1", emotes[0]);
+        PlayerPrefs.SetInt("Emote2", emotes[1]);
+        PlayerPrefs.SetInt("Emote3", emotes[2]);
+        PlayerPrefs.SetInt("Emote4", emotes[3]);
+    }
+    #endregion
+
 }
 
 # region WeaponSkin

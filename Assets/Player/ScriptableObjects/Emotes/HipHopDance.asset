@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: a981d23d295212749a60d02bdbf815b6, type: 2}
   icon: {fileID: 0}
   name: Hip Hop dance
+  index: 12
+  buyable: 0
+  price: 0

@@ -56,8 +56,6 @@ namespace VoiceChat.Networking
             {
                 VoiceChatPacketReceived += OnReceivePacket;
             }
-            Debug.Log("Is client : " + isClient);
-            Debug.Log("Is mine : " + isMine);
             if (isClient && (!isMine || VoiceChatSettings.Instance.LocalDebug))
             {
                 gameObject.AddComponent<AudioSource>();

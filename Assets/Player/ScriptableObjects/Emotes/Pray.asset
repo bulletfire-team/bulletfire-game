@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: d8273e9c0816ea144812c6a8c71f3063, type: 2}
   icon: {fileID: 0}
   name: Pray
+  index: 15
+  buyable: 0
+  price: 0

@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: c040040bd07aac34a8d1ac9dfff1a475, type: 2}
   icon: {fileID: 0}
   name: Old man
+  index: 14
+  buyable: 0
+  price: 0

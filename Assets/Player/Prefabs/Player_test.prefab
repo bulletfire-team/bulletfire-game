@@ -4819,6 +4819,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  playEmote: 0
+  playerAtributes: {fileID: 8341955349082702667}
 --- !u!114 &5977103088287556885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4873,10 +4875,16 @@ MonoBehaviour:
   - {fileID: 3276147868740067406}
   - {fileID: 3275803465632183258}
   - {fileID: 3275318306422898430}
-  mapCam: {fileID: 3235418924256254382}
-  money: 1000
   pseudoTxt: {fileID: 3275519535250291266}
   itemsContainer: {fileID: 0}
+  player: {fileID: 3328235044126429850}
+  playerChat: {fileID: 5617595894010087182}
+  playerEmote: {fileID: 5600337969445366005}
+  playerInput: {fileID: 6431756493290750073}
+  playerMovement: {fileID: 5977103088287556885}
+  playerWeapon: {fileID: 1088895015980004705}
+  mapCam: {fileID: 3235418924256254382}
+  money: 1000
   playerAnimator: {fileID: 7659890890979919164}
   weapons: {fileID: 3235522125278196736}
   skinBody: {fileID: 2309061181377788720}
@@ -4885,6 +4893,7 @@ MonoBehaviour:
   weapAnimator: {fileID: 3292559490149046160}
   ik: {fileID: 7019471758111214257}
   emoteCamera: {fileID: 1579491917342650916}
+  mainCamera: {fileID: 3235625105109754610}
 --- !u!114 &1088895015980004705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5254,6 +5263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attr: {fileID: 8341955349082702667}
   anim: {fileID: 7659890890979919164}
+  targetPosition: {x: -0.911, y: 1.765, z: -1.302}
 --- !u!81 &5927279521880682063
 AudioListener:
   m_ObjectHideFlags: 0

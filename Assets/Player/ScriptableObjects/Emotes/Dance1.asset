@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: af76419900979b14f8ef7e84ba909ab5, type: 2}
   icon: {fileID: 0}
   name: Dance 1
+  index: 8
+  buyable: 0
+  price: 0

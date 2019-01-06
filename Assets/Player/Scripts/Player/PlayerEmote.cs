@@ -6,6 +6,32 @@ public class PlayerEmote : NetworkBehaviour
 {
     public PlayerAtributes attr;
     public Animator anim;
+    private bool needMove = false;
+    public Vector3 targetPosition;
+
+    private void Start()
+    {
+        if(isLocalPlayer)
+        {
+            GameObject.Find("EmoteMenu").GetComponent<EmoteUI>().SetPlayerEmote(this);
+        }
+    }
+
+    private void Update()
+    {
+        if(needMove)
+        {
+            if(Vector3.Distance(targetPosition, attr.emoteCamera.transform.localPosition) > 0.1)
+            {
+                float step = Time.deltaTime * 5f;
+                attr.emoteCamera.transform.localPosition = Vector3.MoveTowards(attr.emoteCamera.transform.localPosition, targetPosition, step);
+            }
+            else
+            {
+                needMove = false;
+            }
+        }
+    }
 
     #region Public void
     public void PlayEmote (int index)
@@ -28,7 +54,7 @@ public class PlayerEmote : NetworkBehaviour
 
     public void RpcPlayEmote (int index)
     {
-        AnimationClip clip = attr.itemsContainer.emotes[index].clip;
+        AnimationClip clip = attr.itemsContainer.GetEmoteByIndex(index).clip;
         StartCoroutine(WaitEmote(clip));
         
         attr.weapons.SetActive(false);
@@ -39,9 +65,7 @@ public class PlayerEmote : NetworkBehaviour
 
     IEnumerator WaitEmote (AnimationClip clip)
     {
-        print("Start cor");
         yield return new WaitForSeconds(clip.length);
-        print("Stop emote");
         Stop();
     }
     #endregion
@@ -72,10 +96,13 @@ public class PlayerEmote : NetworkBehaviour
     {
         attr.skinBody.SetActive(true);
         attr.emoteCamera.SetActive(true);
+        attr.emoteCamera.transform.position = attr.mainCamera.transform.position;
+        needMove = true;
     }
 
     private void StopLocal ()
     {
+        needMove = false;
         attr.skinBody.SetActive(false);
         attr.emoteCamera.SetActive(false);
     }

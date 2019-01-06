@@ -15,3 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: 919480992e1c68741bd6304158129c90, type: 2}
   icon: {fileID: 0}
   name: Samba dance
+  index: 19
+  buyable: 1
+  price: 1000

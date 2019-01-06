@@ -46,6 +46,8 @@ public class PlayerUI : MonoBehaviour {
 
     public GameObject[] grenades;
 
+    public GameObject emoteMenu;
+
     [Header("Weapons")]
     public TextMeshProUGUI firstName;
     public TextMeshProUGUI secondName;

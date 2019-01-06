@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public class ShopManager : MonoBehaviour
     private Server server;
 
     [Header("UI")]
+
     [Header("Money")]
     public TMP_Text moneyTxt;
+
     [Header("Skin System")]
     public Transform skinContainer;
     public GameObject skinItem;
@@ -20,6 +23,7 @@ public class ShopManager : MonoBehaviour
     public TMP_Text charSkinBuyBut;
     private int curSkin = 0;
     private List<ShopCharSkinItem> charSkinItems = new List<ShopCharSkinItem>();
+
     [Header("Weapon system")]
     public Transform weaponContainer;
     public GameObject weaponItem;
@@ -32,6 +36,26 @@ public class ShopManager : MonoBehaviour
     public GameObject buyBut;
     public GameObject unlockTxt;
     private int curweapskin = -1;
+
+    [Header("Emote system")]
+    public Transform emoteContainer;
+    public GameObject emoteItem;
+    public GameObject playerForEmoteStuff;
+    public Animator emoteAnimator;
+    private Emote selectEmote = null;
+    public TMP_Text emoteBuyBut;
+    public GameObject emoteObtain;
+    public GameObject emoteChest;
+    public GameObject emoteEquip;
+    public Image emoteImg1;
+    public Image emoteImg2;
+    public Image emoteImg3;
+    public Image emoteImg4;
+    public TMP_Text emoteTxt1;
+    public TMP_Text emoteTxt2;
+    public TMP_Text emoteTxt3;
+    public TMP_Text emoteTxt4;
+
 
     [Header("Weapon")]
     public Weapon[] weapons;
@@ -46,6 +70,7 @@ public class ShopManager : MonoBehaviour
     {
         weaponStuff.SetActive(false);
         skinStuff.SetActive(false);
+        playerForEmoteStuff.SetActive(false);
     }
 
     private void Start()
@@ -78,6 +103,19 @@ public class ShopManager : MonoBehaviour
             i++;
         }
         SelectCharSkin(0);
+
+        /* ### Emote ### */
+        Emote[] emotes = GameObject.Find("Items").GetComponent<ItemsContainer>().emotes;
+        foreach (Transform item in emoteContainer)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (Emote item in emotes)
+        {
+            GameObject o = Instantiate(emoteItem, emoteContainer);
+            o.GetComponent<ShopEmoteItem>().Init(item, this);
+        }
+        
     }
 
     #region Weapon Skin
@@ -239,6 +277,98 @@ public class ShopManager : MonoBehaviour
             item.Unequip(curSkin);
         }
         SelectCharSkin(curSkin);
+    }
+    #endregion
+
+    #region Emote
+    public void SelectEmote (Emote emote)
+    {
+        emoteAnimator.Play(emote.clip.name);
+        selectEmote = emote;
+
+        if (server.player.GetUnlockEmotes().Contains(selectEmote.index))
+        {
+            emoteBuyBut.transform.parent.gameObject.SetActive(false);
+            emoteObtain.SetActive(true);
+            emoteChest.SetActive(false);
+            emoteEquip.SetActive(true);
+        }
+        else if (selectEmote.buyable)
+        {
+            emoteBuyBut.transform.parent.gameObject.SetActive(true);
+            emoteObtain.SetActive(false);
+            emoteChest.SetActive(false);
+            emoteBuyBut.text = "Acheter (" + selectEmote.price + ")";
+            emoteEquip.SetActive(false);
+        }
+        else
+        {
+            emoteBuyBut.transform.parent.gameObject.SetActive(false);
+            emoteObtain.SetActive(false);
+            emoteChest.SetActive(true);
+            emoteEquip.SetActive(false);
+        }
+    }
+
+    public void BuyEmote ()
+    {
+        if(selectEmote != null)
+        {
+            if (server.player.GetUnlockEmotes().Contains(selectEmote.index)) return;
+            if (!selectEmote.buyable) return;
+            if(server.player.money >= selectEmote.price)
+            {
+                server.player.money -= selectEmote.price;
+                server.BuyEmote(selectEmote.index);
+                SelectEmote(selectEmote);
+                moneyTxt.text = server.player.money.ToString();
+            }
+            else
+            {
+                return;
+            }
+            
+        }
+    }
+
+    public void EquipEmote (int where)
+    {
+        if (where > 3) return;  
+        if(selectEmote != null)
+        {
+            if(server.player.GetUnlockEmotes().Contains(selectEmote.index))
+            {
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().emotes[where] = selectEmote.index;
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().SaveEmotes();
+            }
+        }
+    }
+
+    public void OpenEquipEmoteMenu ()
+    {
+        int[] emotes = GameObject.Find("ItemManager").GetComponent<ItemManager>().emotes;
+        ItemsContainer cont = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        if(cont.GetEmoteByIndex(emotes[0]) != null)
+        {
+            emoteImg1.sprite = cont.GetEmoteByIndex(emotes[0]).icon;
+            emoteTxt1.text = cont.GetEmoteByIndex(emotes[0]).name;
+        }
+
+        if (cont.GetEmoteByIndex(emotes[1]) != null) {
+            emoteImg2.sprite = cont.GetEmoteByIndex(emotes[1]).icon;
+            emoteTxt2.text = cont.GetEmoteByIndex(emotes[1]).name;
+        }
+
+        if (cont.GetEmoteByIndex(emotes[2]) != null) {
+            emoteImg3.sprite = cont.GetEmoteByIndex(emotes[2]).icon;
+            emoteTxt3.text = cont.GetEmoteByIndex(emotes[2]).name;
+        }
+
+        if (cont.GetEmoteByIndex(emotes[3]) != null)
+        {
+            emoteImg4.sprite = cont.GetEmoteByIndex(emotes[3]).icon;
+            emoteTxt4.text = cont.GetEmoteByIndex(emotes[3]).name;
+        }
     }
     #endregion
 

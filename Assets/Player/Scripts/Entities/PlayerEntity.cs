@@ -23,8 +23,10 @@ public class PlayerEntity {
 
     public List<UnlockCharSkin> unlockcharskin = new List<UnlockCharSkin>();
 
+    public List<UnlockEmote> unlockemote = new List<UnlockEmote>();
 
-
+    public List<UnlockAvatar> unlockavatar = new List<UnlockAvatar>();
+    
     public PlayerEntity (string mail, string pass)
     {
         this.mail = mail;
@@ -40,7 +42,17 @@ public class PlayerEntity {
         }
         return li;
     }
-	
+
+    public List<int> GetUnlockEmotes()
+    {
+        List<int> li = new List<int>();
+        foreach (UnlockEmote item in unlockemote)
+        {
+            li.Add(item.Emote_ID);
+        }
+        return li;
+    }
+
 }
 
 [System.Serializable]
@@ -58,5 +70,27 @@ public class UnlockCharSkin
     public UnlockCharSkin(int skin)
     {
         Skin_ID = skin;
+    }
+}
+
+[System.Serializable]
+public class UnlockEmote
+{
+    public int Emote_ID;
+
+    public UnlockEmote (int emote)
+    {
+        Emote_ID = emote;
+    }
+}
+
+[System.Serializable]
+public class UnlockAvatar
+{
+    public int Avatar_ID;
+
+    public UnlockAvatar (int avatar)
+    {
+        Avatar_ID = avatar;
     }
 }

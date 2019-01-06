@@ -160,6 +160,12 @@ public class Server : MonoBehaviour
         socket.Emit("BuyCharSkin", skin);
     }
 
+    public void BuyEmote (int emote)
+    {
+        player.unlockemote.Add(new UnlockEmote(emote));
+        socket.Emit("BuyEmote", emote);
+    }
+
     public void UpdatePlayerStats (PlayerGameStat stats)
     {
         socket.Emit("updatefromhost", JsonUtility.ToJson(stats));

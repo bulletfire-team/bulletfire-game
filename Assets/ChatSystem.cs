@@ -135,7 +135,6 @@ public class ChatSystem : MonoBehaviour
         {
             UnityThread.executeInUpdate(() =>
             {
-                print(data.ToString());
                 Msgs messages = JsonUtility.FromJson<Msgs>(data.ToString());
                 foreach(Msg msg in messages.messages)
                 {

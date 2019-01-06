@@ -315,7 +315,9 @@ MonoBehaviour:
     NbCoffres: 0
     unlockweapskin: []
     unlockcharskin: []
-  url: http://socket.bulletfire.yukkyapp.com/
+    unlockemote: []
+    unlockavatar: []
+  url: http://socket.bulletfire.fr/
   keepCo: 0
   playerIcons:
   - {fileID: 21300000, guid: 5179444c583ade9478ca7a2c27ee480c, type: 3}
@@ -899,6 +901,7 @@ MonoBehaviour:
   - Weapon: 6
     Skin: -1
   characterSkin: 0
+  emotes: 00000000000000000000000000000000
 --- !u!4 &1718547172
 Transform:
   m_ObjectHideFlags: 0
