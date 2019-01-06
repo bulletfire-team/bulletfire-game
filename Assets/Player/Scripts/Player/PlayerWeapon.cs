@@ -34,7 +34,9 @@ public class PlayerWeapon : NetworkBehaviour
     public Transform launchPlace;
     public int grenadeForce = 2;
     public int nbGrenade = 3;
+    public int nbSmokeGrenade = 3;
     private bool canLaunchGrenade = true;
+    public GameObject grenadeSmokePrefab;
 
     [Header("Shot")]
     public MouseLook weapMouseLook;
@@ -60,6 +62,9 @@ public class PlayerWeapon : NetworkBehaviour
 
     [SyncVar(hook = "OnThrow")]
     public bool isThrowing = false;
+
+    [SyncVar(hook = "OnThrowSmoke")]
+    public bool isThrowingSmoke = false;
 
     [SyncVar(hook = "OnReload")]
     public bool isReload = false;
@@ -229,6 +234,8 @@ public class PlayerWeapon : NetworkBehaviour
     #endregion
 
     #region Grenade
+
+    #region Normal Grenade
     public void LaunchGrenade ()
     {
         if(canShot && canLaunchGrenade)
@@ -245,22 +252,22 @@ public class PlayerWeapon : NetworkBehaviour
     }
 
     [Command]
-    public void CmdLaunchGrenade ()
+    public void CmdLaunchGrenade()
     {
         isThrowing = !isThrowing;
         OnThrow(true);
     }
 
-    public void OnThrow (bool throwi)
+    public void OnThrow(bool throwi)
     {
         curLeftIk = ik.leftHandObj;
         ik.leftHandObj = cutLeftIk;
         StartCoroutine(waitGrenade());
-    } 
+    }
 
-    IEnumerator waitGrenade ()
+    IEnumerator waitGrenade()
     {
-        if(isServer)
+        if (isServer)
         {
             yield return new WaitForSeconds(0.5f);
             GameObject go = Instantiate(grenadePrefab, launchPlace.position, Quaternion.identity);
@@ -279,6 +286,58 @@ public class PlayerWeapon : NetworkBehaviour
             ik.leftHandObj = curLeftIk;
         }
     }
+    #endregion
+
+    #region Smoke Grenade
+    public void LaunchSmokeGrenade ()
+    {
+        if(canShot && canLaunchGrenade)
+        {
+            if(nbSmokeGrenade > 0)
+            {
+                nbSmokeGrenade--;
+                playerUI.smokeGrenades[nbSmokeGrenade].SetActive(false);
+                canLaunchGrenade = false;
+                weapManagerAnim.CmdSetTrigger("Grenade");
+                CmdLaunchSmokeGrenade();
+            }
+        }
+    }
+
+    [Command]
+    public void CmdLaunchSmokeGrenade()
+    {
+        isThrowingSmoke = !isThrowingSmoke;
+    }
+
+    public void OnThrowSmoke (bool throwi)
+    {
+        curLeftIk = ik.leftHandObj;
+        ik.leftHandObj = curLeftIk;
+        StartCoroutine(waitSmokeGrenade());
+    }
+
+    IEnumerator waitSmokeGrenade()
+    {
+        if (isServer)
+        {
+            yield return new WaitForSeconds(0.5f);
+            GameObject go = Instantiate(grenadeSmokePrefab, launchPlace.position, Quaternion.identity);
+            go.GetComponent<Rigidbody>().velocity = launchPlace.TransformDirection(Vector3.forward) * grenadeForce;
+            NetworkServer.Spawn(go);
+            yield return new WaitForSeconds(0.5f);
+            canLaunchGrenade = true;
+            ik.leftHandObj = curLeftIk;
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            canLaunchGrenade = true;
+            ik.leftHandObj = curLeftIk;
+        }
+    }
+    #endregion
+
     #endregion
 
     #region Switch Weapon

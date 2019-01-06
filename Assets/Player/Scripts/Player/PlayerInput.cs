@@ -104,6 +104,13 @@ public class PlayerInput : NetworkBehaviour
             playerEmote.StopEmote();
         }
 
+        // Smoke Grenade
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            playerWeapon.LaunchSmokeGrenade();
+            playerEmote.StopEmote();
+        }
+
         // Reload
         if (Input.GetKeyDown(inputManager.GetKeyCode("reload")))
         {

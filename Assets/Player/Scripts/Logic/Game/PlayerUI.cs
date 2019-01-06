@@ -45,6 +45,7 @@ public class PlayerUI : MonoBehaviour {
     public Image team;
 
     public GameObject[] grenades;
+    public GameObject[] smokeGrenades;
 
     public GameObject emoteMenu;
 
