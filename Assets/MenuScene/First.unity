@@ -316,6 +316,7 @@ MonoBehaviour:
     unlockweapskin: []
     unlockcharskin: []
     unlockemote: []
+    unlockquote: []
     unlockavatar: []
   url: http://socket.bulletfire.fr/
   keepCo: 0
@@ -902,6 +903,7 @@ MonoBehaviour:
     Skin: -1
   characterSkin: 0
   emotes: 00000000000000000000000000000000
+  quotes: 00000000000000000000000000000000
 --- !u!4 &1718547172
 Transform:
   m_ObjectHideFlags: 0
@@ -1054,6 +1056,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5787592dbfe48743ab23301d275c184, type: 2}
   - {fileID: 11400000, guid: 3fa381da650dbe84d9b354d12278672d, type: 2}
   - {fileID: 11400000, guid: b05b0507142db334781d3fe9702d2473, type: 2}
+  quotes:
+  - {fileID: 11400000, guid: c57ee781abcfcd741b6ea829e853155d, type: 2}
+  - {fileID: 11400000, guid: 3bb15f8f4af6fa44fa3a9dca11875f03, type: 2}
+  - {fileID: 11400000, guid: a2df31bc82439944aaf59f8c094a12f1, type: 2}
+  - {fileID: 11400000, guid: c3525b18492912e4084817426f87feb7, type: 2}
+  - {fileID: 11400000, guid: 16f744bd35b0fbc4daaf07d45e86536e, type: 2}
+  - {fileID: 11400000, guid: 9d389b7c7561dba45b98654264977f28, type: 2}
+  - {fileID: 11400000, guid: 9b07333cff5472644b9d079be464c6d0, type: 2}
+  - {fileID: 11400000, guid: 8a395b1bf06678e41b60e14cb4912904, type: 2}
+  - {fileID: 11400000, guid: 3b08b54e25c889c40a3c0c5c07deae5a, type: 2}
+  - {fileID: 11400000, guid: 95690fa2117f87142ad3b21f03cf00e8, type: 2}
 --- !u!1001 &2008153857
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -166,6 +166,12 @@ public class Server : MonoBehaviour
         socket.Emit("BuyEmote", emote);
     }
 
+    public void BuyQuote (int quote)
+    {
+        player.unlockquote.Add(new UnlockQuote(quote));
+        socket.Emit("BuyQuote", quote);
+    }
+
     public void UpdatePlayerStats (PlayerGameStat stats)
     {
         socket.Emit("updatefromhost", JsonUtility.ToJson(stats));

@@ -164,5 +164,16 @@ public class PlayerInput : NetworkBehaviour
         {
             playerAtributes.playerUI.emoteMenu.SetActive(false);
         }
+
+        // Quotes
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            playerAtributes.playerUI.quoteMenu.SetActive(true);
+        }
+
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            playerAtributes.playerUI.quoteMenu.SetActive(false);
+        }
     }
 }

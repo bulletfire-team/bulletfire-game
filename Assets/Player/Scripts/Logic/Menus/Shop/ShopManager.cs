@@ -56,6 +56,24 @@ public class ShopManager : MonoBehaviour
     public TMP_Text emoteTxt3;
     public TMP_Text emoteTxt4;
 
+    [Header("Quote system")]
+    public Transform quoteContainer;
+    public GameObject quoteItem;
+    public AudioSource quoteAudio;
+    private Quote selectQuote = null;
+    public TMP_Text quoteBuyBut;
+    public GameObject quoteObtain;
+    public GameObject quoteChest;
+    public GameObject quoteEquip;
+    public Image quoteImg1;
+    public Image quoteImg2;
+    public Image quoteImg3;
+    public Image quoteImg4;
+    public TMP_Text quoteTxt1;
+    public TMP_Text quoteTxt2;
+    public TMP_Text quoteTxt3;
+    public TMP_Text quoteTxt4;
+
 
     [Header("Weapon")]
     public Weapon[] weapons;
@@ -114,6 +132,19 @@ public class ShopManager : MonoBehaviour
         {
             GameObject o = Instantiate(emoteItem, emoteContainer);
             o.GetComponent<ShopEmoteItem>().Init(item, this);
+        }
+
+        /* ### Quote ### */
+        Quote[] quotes = GameObject.Find("Items").GetComponent<ItemsContainer>().quotes;
+        foreach (Transform item in quoteContainer)
+        {
+            Destroy(item.gameObject);
+        }
+
+        foreach (Quote item in quotes)
+        {
+            GameObject o = Instantiate(quoteItem, quoteContainer);
+            o.GetComponent<ShopQuoteItem>().Init(item, this);
         }
         
     }
@@ -368,6 +399,101 @@ public class ShopManager : MonoBehaviour
         {
             emoteImg4.sprite = cont.GetEmoteByIndex(emotes[3]).icon;
             emoteTxt4.text = cont.GetEmoteByIndex(emotes[3]).name;
+        }
+    }
+    #endregion
+
+    #region Quote
+    public void SelectQuote(Quote quote)
+    {
+        quoteAudio.clip = quote.clip;
+        quoteAudio.Play();
+        selectQuote = quote;
+
+        if (server.player.GetUnlockQuotes().Contains(selectQuote.index))
+        {
+            quoteBuyBut.transform.parent.gameObject.SetActive(false);
+            quoteObtain.SetActive(true);
+            quoteChest.SetActive(false);
+            quoteEquip.SetActive(true);
+        }
+        else if (selectQuote.buyable)
+        {
+            quoteBuyBut.transform.parent.gameObject.SetActive(true);
+            quoteObtain.SetActive(false);
+            quoteChest.SetActive(false);
+            quoteBuyBut.text = "Acheter (" + selectQuote.price + ")";
+            quoteEquip.SetActive(false);
+        }
+        else
+        {
+            quoteBuyBut.transform.parent.gameObject.SetActive(false);
+            quoteObtain.SetActive(false);
+            quoteChest.SetActive(true);
+            quoteEquip.SetActive(false);
+        }
+    }
+
+    public void BuyQuote()
+    {
+        if (selectQuote != null)
+        {
+            if (server.player.GetUnlockQuotes().Contains(selectQuote.index)) return;
+            if (!selectQuote.buyable) return;
+            if (server.player.money >= selectQuote.price)
+            {
+                server.player.money -= selectQuote.price;
+                server.BuyQuote(selectQuote.index);
+                SelectQuote(selectQuote);
+                moneyTxt.text = server.player.money.ToString();
+            }
+            else
+            {
+                return;
+            }
+
+        }
+    }
+
+    public void EquipQuote(int where)
+    {
+        if (where > 3) return;
+        if (selectQuote != null)
+        {
+            if (server.player.GetUnlockQuotes().Contains(selectQuote.index))
+            {
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().quotes[where] = selectQuote.index;
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().SaveQuotes();
+            }
+        }
+    }
+
+    public void OpenEquipQuoteMenu()
+    {
+        int[] quotes = GameObject.Find("ItemManager").GetComponent<ItemManager>().quotes;
+        ItemsContainer cont = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        if (cont.GetQuoteByIndex(quotes[0]) != null)
+        {
+            quoteImg1.sprite = cont.GetQuoteByIndex(quotes[0]).icon;
+            quoteTxt1.text = cont.GetQuoteByIndex(quotes[0]).name;
+        }
+
+        if (cont.GetQuoteByIndex(quotes[1]) != null)
+        {
+            quoteImg2.sprite = cont.GetQuoteByIndex(quotes[1]).icon;
+            quoteTxt2.text = cont.GetQuoteByIndex(quotes[1]).name;
+        }
+
+        if (cont.GetQuoteByIndex(quotes[2]) != null)
+        {
+            quoteImg3.sprite = cont.GetQuoteByIndex(quotes[2]).icon;
+            quoteTxt3.text = cont.GetQuoteByIndex(quotes[2]).name;
+        }
+
+        if (cont.GetQuoteByIndex(quotes[3]) != null)
+        {
+            quoteImg4.sprite = cont.GetQuoteByIndex(quotes[3]).icon;
+            quoteTxt4.text = cont.GetQuoteByIndex(quotes[3]).name;
         }
     }
     #endregion

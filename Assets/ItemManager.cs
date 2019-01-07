@@ -9,12 +9,16 @@ public class ItemManager : MonoBehaviour {
 
     [Header("Emote")]
     public int[] emotes;
+
+    [Header("Quote")]
+    public int[] quotes;
     
 
     void Start () {
         GetWeaponSkin();
         GetCharacterSkin();
         GetEmotes();
+        GetQuotes();
 	}
 
     #region Character Skin
@@ -101,6 +105,39 @@ public class ItemManager : MonoBehaviour {
         PlayerPrefs.SetInt("Emote2", emotes[1]);
         PlayerPrefs.SetInt("Emote3", emotes[2]);
         PlayerPrefs.SetInt("Emote4", emotes[3]);
+    }
+    #endregion
+
+    #region Quotes
+    public void GetQuotes ()
+    {
+        if (PlayerPrefs.HasKey("Quote1"))
+        {
+            quotes[0] = PlayerPrefs.GetInt("Quote1");
+        }
+
+        if (PlayerPrefs.HasKey("Quote2"))
+        {
+            quotes[1] = PlayerPrefs.GetInt("Quote2");
+        }
+
+        if (PlayerPrefs.HasKey("Quote3"))
+        {
+            quotes[2] = PlayerPrefs.GetInt("Quote3");
+        }
+
+        if (PlayerPrefs.HasKey("Quote4"))
+        {
+            quotes[3] = PlayerPrefs.GetInt("Quote4");
+        }
+    }
+
+    public void SaveQuotes ()
+    {
+        PlayerPrefs.SetInt("Quote1", quotes[0]);
+        PlayerPrefs.SetInt("Quote2", quotes[1]);
+        PlayerPrefs.SetInt("Quote3", quotes[2]);
+        PlayerPrefs.SetInt("Quote4", quotes[3]);
     }
     #endregion
 

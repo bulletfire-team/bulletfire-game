@@ -25,6 +25,8 @@ public class PlayerEntity {
 
     public List<UnlockEmote> unlockemote = new List<UnlockEmote>();
 
+    public List<UnlockQuote> unlockquote = new List<UnlockQuote>();
+
     public List<UnlockAvatar> unlockavatar = new List<UnlockAvatar>();
     
     public PlayerEntity (string mail, string pass)
@@ -49,6 +51,16 @@ public class PlayerEntity {
         foreach (UnlockEmote item in unlockemote)
         {
             li.Add(item.Emote_ID);
+        }
+        return li;
+    }
+
+    public List<int> GetUnlockQuotes ()
+    {
+        List<int> li = new List<int>();
+        foreach (UnlockQuote item in unlockquote)
+        {
+            li.Add(item.Quote_ID);
         }
         return li;
     }
@@ -92,5 +104,16 @@ public class UnlockAvatar
     public UnlockAvatar (int avatar)
     {
         Avatar_ID = avatar;
+    }
+}
+
+[System.Serializable]
+public class UnlockQuote
+{
+    public int Quote_ID;
+
+    public UnlockQuote (int quote)
+    {
+        Quote_ID = quote;
     }
 }
