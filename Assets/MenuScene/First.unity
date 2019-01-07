@@ -339,7 +339,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: eadcf7daf88f0104180e1e3c3a26f762, type: 3}
   skinPrice: 00000000e8030000d0070000b80b0000a00f0000
   vcURL: http://51.254.95.174/launcherapp/checkversion
-  versionIdentifier: 704e9fb9-6d6c-401c-b129-6789bfecdd10
+  versionIdentifier: dfb0f235-6041-4c8c-b8b0-aed8a85599a9
 --- !u!4 &141381025
 Transform:
   m_ObjectHideFlags: 0
