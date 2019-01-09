@@ -24,7 +24,7 @@ public class ArsenalMenu : MonoBehaviour
 
     [Header("Encyclopédie")]
     [Header("Armes")]
-    public Weapon[] weaps;
+    private Weapon[] weaps;
     public Transform weapContain;
     public GameObject weapItem;
     public GameObject weapsLayer;
@@ -45,7 +45,7 @@ public class ArsenalMenu : MonoBehaviour
     private int lvl = 1;
     private Weapon w;
     [Header("Equipements")]
-    public PlayerEquipment[] equips;
+    private PlayerEquipment[] equips;
     public Transform equipContain;
     public GameObject equipItem;
     public GameObject equipsLayer;
@@ -59,11 +59,14 @@ public class ArsenalMenu : MonoBehaviour
     public GameObject equipLayer;
     private int equipLvl = 1;
     private PlayerEquipment p;
+    private ItemsContainer itemsContainer;
 
     private void Start()
     {
         PlayerEntity playerEntity = GameObject.Find("Server").GetComponent<Server>().player;
-
+        itemsContainer = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        weaps = itemsContainer.weapons;
+        equips = itemsContainer.playerEquipments;
         ShowPlayerStats(playerEntity);
         ShowWeaps();
         ShowEquipments();
@@ -152,7 +155,7 @@ public class ArsenalMenu : MonoBehaviour
         foreach (UnlockWeapSkin item in unlock)
         {
             GameObject ob = Instantiate(skinItem, rightEquipmentContainer);
-            ob.GetComponent<WeapSkinItem>().Init(w.skins[item.Skin_ID], this, item.Skin_ID, skin == item.Skin_ID);
+            ob.GetComponent<WeapSkinItem>().Init(w.GetWeaponSkinByIndex(item.Skin_ID).tex, this, item.Skin_ID, skin == item.Skin_ID);
         }
         ShowWeapLvlDependInfo();
     }

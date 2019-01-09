@@ -9,13 +9,11 @@ public class PlayerAtributes : NetworkBehaviour
     // Weapon Manager
     [Header("Weapon Manager")]
     public WeaponManager weaponManager;
-    public Weapon[] weapsObj;
-
+    
     // Equipment Manager
     [Header("Equipment Manager")]
     public EquipmentManager equipmentManager;
-    public PlayerEquipment[] equipmentObj;
-
+    
     // UI
     [Header("UI")]
     public GameObject lifeBar;
@@ -33,26 +31,32 @@ public class PlayerAtributes : NetworkBehaviour
     public PlayerMovement playerMovement;
     public PlayerWeapon playerWeapon;
 
-    public PlayerUI playerUI;
-
-    public GameObject mapCam;
-    public int money = 1000;
-
+    [Header("Animator")]
     public Animator playerAnimator;
+    public Animator globalAnimator;
+    public Animator weapAnimator;
+
+    [Header("Player objects")]
     public GameObject weapons;
     public GameObject skinBody;
     public GameObject skinArms;
-    public Animator globalAnimator;
-    public Animator weapAnimator;
-    public IK ik;
+    public GameObject mapCam;
     public GameObject emoteCamera;
     public GameObject mainCamera;
 
+    [Header("Other")]
+    public PlayerUI playerUI;
+    public int money = 1000;
+    public IK ik;
+    
+
+    
     private void Start()
     {
         playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
         itemsContainer = GameObject.Find("Items").GetComponent<ItemsContainer>();
-        if(isLocalPlayer)
+
+        if (isLocalPlayer)
         {
             lifeBar.SetActive(false);
             pseudo.SetActive(false);
@@ -61,10 +65,10 @@ public class PlayerAtributes : NetworkBehaviour
         if (isLocalPlayer || isServer)
         {
             weaponManager = new WeaponManager();
-            weaponManager.InitWeaponManager(weapsObj);
+            weaponManager.InitWeaponManager(itemsContainer.weapons);
 
             equipmentManager = new EquipmentManager();
-            equipmentManager.Init(equipmentObj);
+            equipmentManager.Init(itemsContainer.playerEquipments);
         }
     }
 

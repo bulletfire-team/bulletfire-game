@@ -9,9 +9,7 @@ using TMPro;
 public class Buy : MonoBehaviour {
 
     public TMP_Text moneyTxt;
-
-    [Header("Weapons")]
-	public Weapon[] primaryWeaps = new Weapon[4];
+    
 	// UI
 	public TextMeshProUGUI title;
 	public TextMeshProUGUI deg;
@@ -30,8 +28,6 @@ public class Buy : MonoBehaviour {
     public GameObject weaponEquipmentItem;
     private int actualWeap = -1;
 
-    [Header("Player Equipment")]
-    public PlayerEquipment[] playerEquipments;
     // UI
     public TextMeshProUGUI equipBuyBut;
     public TextMeshProUGUI equipTitle;
@@ -44,6 +40,17 @@ public class Buy : MonoBehaviour {
     [HideInInspector]public GameObject localPlayer;
 
     private PlayerAtributes playerAtributes = null;
+    private ItemsContainer itemsContainer;
+
+    private Weapon[] primaryWeaps;
+    private PlayerEquipment[] playerEquipments;
+
+    private void Start()
+    {
+        itemsContainer = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        primaryWeaps = itemsContainer.weapons;
+        playerEquipments = itemsContainer.playerEquipments;
+    }
 
     private void OnEnable()
     {

@@ -21,6 +21,7 @@ public class ShopManager : MonoBehaviour
     public GameObject charskinobtain;
     public GameObject charskinequipbut;
     public TMP_Text charSkinBuyBut;
+    public GameObject charskinchest;
     private int curSkin = 0;
     private List<ShopCharSkinItem> charSkinItems = new List<ShopCharSkinItem>();
 
@@ -34,8 +35,24 @@ public class ShopManager : MonoBehaviour
     public Transform weaponItemContainer;
     public GameObject weaponItemItem;
     public GameObject buyBut;
+    public GameObject weapchest;
     public GameObject unlockTxt;
     private int curweapskin = -1;
+
+    [Header("Player equipment skin system")]
+    public Transform peContainer;
+    public GameObject peItem;
+    public Transform pePlace;
+    public GameObject peStuff;
+    private GameObject curPe = null;
+    private PlayerEquipment curEqui = null;
+    public Transform equiItemContainer;
+    public GameObject equiItemItem;
+    public GameObject peBuyBut;
+    public GameObject peChest;
+    public GameObject peUnlock;
+    private int curpeSkin = -1;
+    private PlayerEquipment[] playerEquipments;
 
     [Header("Emote system")]
     public Transform emoteContainer;
@@ -76,7 +93,9 @@ public class ShopManager : MonoBehaviour
 
 
     [Header("Weapon")]
-    public Weapon[] weapons;
+    private Weapon[] weapons;
+
+    private ItemsContainer itemsContainer;
 
     private void OnEnable()
     {
@@ -89,10 +108,14 @@ public class ShopManager : MonoBehaviour
         weaponStuff.SetActive(false);
         skinStuff.SetActive(false);
         playerForEmoteStuff.SetActive(false);
+        peStuff.SetActive(false);
     }
 
     private void Start()
     {
+        itemsContainer = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        weapons = itemsContainer.weapons;
+        playerEquipments = itemsContainer.playerEquipments;
         server = GameObject.Find("Server").GetComponent<Server>();
         /*  ## Weapon skin ## */
         foreach (Transform item in weaponContainer)
@@ -105,6 +128,18 @@ public class ShopManager : MonoBehaviour
             GameObject o = Instantiate(weaponItem, weaponContainer);
             o.GetComponent<ShopWeaponItem>().Init(item, this);
         }
+
+        /* ### Character equipment skin ### */
+        foreach (Transform item in peContainer)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (PlayerEquipment item in playerEquipments)
+        {
+            GameObject o = Instantiate(peItem, peContainer);
+            o.GetComponent<ShopPlayerEquipmentItem>().Init(item, this);
+        }
+
         /* ## Character skin ## */
         foreach (Transform item in skinContainer)
         {
@@ -113,10 +148,11 @@ public class ShopManager : MonoBehaviour
         int i = 0;
         charSkinItems.Clear();
         int equiped = GameObject.Find("ItemManager").GetComponent<ItemManager>().characterSkin;
-        foreach (Texture item in server.characterSkinsTex)
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        foreach (CharacterSkin item in container.characterSkins)
         {
             GameObject o = Instantiate(skinItem, skinContainer);
-            o.GetComponent<ShopCharSkinItem>().Init(item, i, this, i == equiped);
+            o.GetComponent<ShopCharSkinItem>().Init(item.tex, i, this, i == equiped);
             charSkinItems.Add(o.GetComponent<ShopCharSkinItem>());
             i++;
         }
@@ -162,17 +198,16 @@ public class ShopManager : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-        int i = 0;
-        foreach (Texture item in weap.skins)
+        
+        foreach (WeaponSkin item in weap.skins)
         {
             bool isUnlocked = false;
-            if(unlock.Find(u => u.Skin_ID == i) != null)
+            if(unlock.Find(u => u.Skin_ID == item.index) != null)
             {
                 isUnlocked = true;
             }
             GameObject o = Instantiate(weaponItemItem, weaponItemContainer);
-            o.GetComponent<ShopWeaponSkin>().Init(item, this, i, isUnlocked);
-            i++;
+            o.GetComponent<ShopWeaponSkin>().Init(item.tex, this, item.index, isUnlocked);
         }
         buyBut.SetActive(false);
         unlockTxt.SetActive(false);
@@ -189,17 +224,26 @@ public class ShopManager : MonoBehaviour
                 re.material.mainTexture = texture;
             }
         }
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
         List<UnlockWeapSkin> unlock = server.player.unlockweapskin;
         if(unlock.Find(u => u.Skin_ID == i && u.Weapon_ID == curWeap.index) != null)
         {
             buyBut.SetActive(false);
             unlockTxt.SetActive(true);
+            weapchest.SetActive(false);
         }
-        else
+        else if(container.GetWeaponSkinByIndex(i).buyable)
         {
             unlockTxt.SetActive(false);
             buyBut.SetActive(true);
-            buyBut.GetComponentInChildren<TMPro.TMP_Text>().text = "Acheter (" + curWeap.skinsPrice[i] + ")";
+            weapchest.SetActive(false);
+            buyBut.GetComponentInChildren<TMPro.TMP_Text>().text = "Acheter (" + curWeap.GetWeaponSkinByIndex(i).price + ")";
+        }
+        else
+        {
+            weapchest.SetActive(true);
+            unlockTxt.SetActive(false);
+            buyBut.SetActive(false);
         }
         curweapskin = i;
         
@@ -217,9 +261,9 @@ public class ShopManager : MonoBehaviour
             else
             {
                 Server server = GameObject.Find("Server").GetComponent<Server>();
-                if(server.player.money >= curWeap.skinsPrice[curweapskin])
+                if(server.player.money >= curWeap.GetWeaponSkinByIndex(curweapskin).price)
                 {
-                    server.player.money -= curWeap.skinsPrice[curweapskin];
+                    server.player.money -= curWeap.GetWeaponSkinByIndex(curweapskin).price;
                     server.BuyWeaponSkin(curWeap.index, curweapskin);
                     SelectWeapon(curWeap);
                     moneyTxt.text = GameObject.Find("Server").GetComponent<Server>().player.money.ToString();
@@ -233,10 +277,96 @@ public class ShopManager : MonoBehaviour
     }
     #endregion
 
+    #region Player equipment Skin
+    public void SelectPlayerEquipment (PlayerEquipment pe)
+    {
+        Destroy(curPe);
+        List<UnlockPlayerEquipmentSkin> unlock = server.player.unlockplayerequipmentskin.FindAll(u => u.PlayerEquipment_ID == pe.index);
+        curPe = Instantiate(pe.prefab, pePlace);
+        curPe.transform.localPosition = Vector3.zero;
+        curPe.transform.localRotation = Quaternion.identity;
+        curEqui = pe;
+        foreach (Transform item in peContainer)
+        {
+            Destroy(item.gameObject);
+        }
+        
+        foreach (EquipmentSkin item in pe.skins)
+        {
+            bool isUnlocked = false;
+            if (unlock.Find(u => u.Skin_ID == item.index) != null) isUnlocked = true;
+            GameObject o = Instantiate(equiItemItem, equiItemContainer);
+            o.GetComponent<ShopPlayerEquipmentSkin>().Init(item.icon, this, item.index, isUnlocked);
+        }
+        peBuyBut.SetActive(false);
+        peUnlock.SetActive(false);
+        curpeSkin = -1;
+    }
+
+    public void SelectPlayerEquipmentSkin (int i)
+    {
+        EquipmentSkin skin = curEqui.GetEquipmentSkinByIndex(i);
+        Destroy(curPe);
+        curPe = Instantiate(skin.prefab, pePlace);
+        curPe.transform.localPosition = Vector3.zero;
+        curPe.transform.localRotation = Quaternion.identity;
+
+        List<UnlockPlayerEquipmentSkin> unlock = server.player.unlockplayerequipmentskin;
+        if(unlock.Find(u => u.Skin_ID == i && u.PlayerEquipment_ID == curEqui.index) != null)
+        {
+            peBuyBut.SetActive(false);
+            peUnlock.SetActive(true);
+            peChest.SetActive(false);
+        }
+        else if (skin.buyable)
+        {
+            peUnlock.SetActive(false);
+            peBuyBut.SetActive(true);
+            peChest.SetActive(false);
+            peBuyBut.GetComponentInChildren<TMP_Text>().text = "Acheter (" + skin.price + ")";
+        }
+        else
+        {
+            peChest.SetActive(true);
+            peBuyBut.SetActive(false);
+            peUnlock.SetActive(false);
+        }
+
+        curpeSkin = i;
+    }
+
+    public void BuyEquipmentSkin ()
+    {
+        if(curEqui != null && curpeSkin != -1)
+        {
+            List<UnlockPlayerEquipmentSkin> unlock = server.player.unlockplayerequipmentskin;
+            if(unlock.Find(u => u.Skin_ID == curpeSkin && u.PlayerEquipment_ID == curEqui.index) != null)
+            {
+                return;
+            }
+            else
+            {
+                if(server.player.money >= curEqui.GetEquipmentSkinByIndex(curpeSkin).price)
+                {
+                    server.player.money -= curEqui.GetEquipmentSkinByIndex(curpeSkin).price;
+                    server.BuyPlayerEquipmentSkin(curEqui.index, curpeSkin);
+                    SelectPlayerEquipment(curEqui);
+                    moneyTxt.text = server.player.money.ToString();
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+    }
+    #endregion
+
     #region Character Skin
     public void SelectCharSkin (int i)
     {
-        Material mat = server.characterSkins[i];
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        Material mat = container.GetCharacterSkinByIndex(i).mat;
         foreach (Transform item in character)
         {
             Renderer rend = item.GetComponent<Renderer>();
@@ -258,12 +388,20 @@ public class ShopManager : MonoBehaviour
             {
                 charSkinBuyBut.transform.parent.gameObject.SetActive(false);
                 charskinobtain.SetActive(true);
+                charskinchest.SetActive(false);
             }
-            else
+            else if(container.GetCharacterSkinByIndex(curSkin).buyable)
             {
                 charSkinBuyBut.transform.parent.gameObject.SetActive(true);
                 charskinobtain.SetActive(false);
-                charSkinBuyBut.text = "Acheter (" + server.skinPrice[curSkin] + ")";
+                charskinchest.SetActive(false);
+                charSkinBuyBut.text = "Acheter (" + container.GetCharacterSkinByIndex(curSkin).price + ")";
+            }
+            else
+            {
+                charskinchest.SetActive(true);
+                charskinobtain.SetActive(false);
+                charSkinBuyBut.transform.parent.gameObject.SetActive(false);
             }
         }
 
@@ -283,12 +421,13 @@ public class ShopManager : MonoBehaviour
 
     public void BuyCharSkin ()
     {
-        if(curSkin != 0)
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        if (curSkin != 0)
         {
             if (server.player.GetUnlockCharSkin().Contains(curSkin)) return;
-            if(server.player.money >= server.skinPrice[curSkin])
+            if(server.player.money >= container.GetCharacterSkinByIndex(curSkin).price)
             {
-                server.player.money -= server.skinPrice[curSkin];
+                server.player.money -= container.GetCharacterSkinByIndex(curSkin).price;
                 server.BuyChararcterSkin(curSkin);
                 SelectCharSkin(curSkin);
                 moneyTxt.text = server.player.money.ToString();

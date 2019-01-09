@@ -17,11 +17,12 @@ public class AvatarManager : MonoBehaviour
     private void Start()
     {
         server = GameObject.Find("Server").GetComponent<Server>();
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
         int i = 0;
-        foreach (Sprite item in server.playerIcons)
+        foreach (Avatar item in container.avatars)
         {
             GameObject o = Instantiate(avatarItem, avatarContainer);
-            o.GetComponent<AvatarItem>().Init(item, server.player.icon == i, i, this);
+            o.GetComponent<AvatarItem>().Init(item.icon, server.player.icon == i, i, this);
             i++;
             items.Add(o.GetComponent<AvatarItem>());
         }
@@ -29,13 +30,14 @@ public class AvatarManager : MonoBehaviour
 
     public void ChangeAvatar (int index)
     {
-        if(index < server.playerIcons.Length)
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        if (index < container.avatars.Length)
         {
             items[server.player.icon].Deselect();
             items[index].Select();
             server.player.icon = index;
             server.UpdateUserInfos(server.player);
-            avatarIcon.sprite = server.playerIcons[index];
+            avatarIcon.sprite = container.GetAvatarByIndex(index).icon;
         }
     }
 }

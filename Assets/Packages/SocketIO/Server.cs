@@ -14,11 +14,6 @@ public class Server : MonoBehaviour
 
     public bool keepCo = false;
 
-    public Sprite[] playerIcons;
-    public Material[] characterSkins;
-    public Texture[] characterSkinsTex;
-    public int[] skinPrice;
-
     [Header("Version control")]
     public string vcURL = "http://51.254.95.174/checkversion.php";
     public string versionIdentifier;
@@ -170,6 +165,20 @@ public class Server : MonoBehaviour
     {
         player.unlockquote.Add(new UnlockQuote(quote));
         socket.Emit("BuyQuote", quote);
+    }
+
+    public void OpenChest ()
+    {
+        socket.Emit("OpenBox");
+    }
+
+    public void BuyPlayerEquipmentSkin (int equipment, int skin)
+    {
+        UnlockPlayerEquipmentSkin un = new UnlockPlayerEquipmentSkin();
+        un.PlayerEquipment_ID = equipment;
+        un.Skin_ID = skin;
+        player.unlockplayerequipmentskin.Add(un);
+        socket.Emit("BuyPlayerEquipmentSkin", JsonUtility.ToJson(un));
     }
 
     public void UpdatePlayerStats (PlayerGameStat stats)

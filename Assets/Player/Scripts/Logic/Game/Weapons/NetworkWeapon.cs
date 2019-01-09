@@ -33,7 +33,7 @@ public class NetworkWeapon : NetworkBehaviour
                 Renderer r = item.GetComponent<Renderer>();
                 if(r != null)
                 {
-                    r.material.mainTexture = GetComponent<WeaponHolder>().weapon.skins[skin];
+                    r.material.mainTexture = GetComponent<WeaponHolder>().weapon.GetWeaponSkinByIndex(skin).tex;
                 }
             }
         }

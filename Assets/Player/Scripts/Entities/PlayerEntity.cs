@@ -28,6 +28,8 @@ public class PlayerEntity {
     public List<UnlockQuote> unlockquote = new List<UnlockQuote>();
 
     public List<UnlockAvatar> unlockavatar = new List<UnlockAvatar>();
+
+    public List<UnlockPlayerEquipmentSkin> unlockplayerequipmentskin = new List<UnlockPlayerEquipmentSkin>();
     
     public PlayerEntity (string mail, string pass)
     {
@@ -71,6 +73,13 @@ public class PlayerEntity {
 public class UnlockWeapSkin
 {
     public int Weapon_ID;
+    public int Skin_ID;
+}
+
+[System.Serializable]
+public class UnlockPlayerEquipmentSkin
+{
+    public int PlayerEquipment_ID;
     public int Skin_ID;
 }
 

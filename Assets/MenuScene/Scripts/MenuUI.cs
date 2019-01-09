@@ -18,9 +18,10 @@ public class MenuUI : MonoBehaviour {
 
     private void Start()
     {
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
         Server server = GameObject.Find("Server").GetComponent<Server>();
         pseudoTxt.text = server.player.nickname;
-        iconImg.sprite = server.playerIcons[server.player.icon];
+        iconImg.sprite = container.GetAvatarByIndex(server.player.icon).icon;
         rpmanager = GameObject.Find("DiscordManager").GetComponent<DiscordRPManager>();
         rpmanager.StartMenu();
     }

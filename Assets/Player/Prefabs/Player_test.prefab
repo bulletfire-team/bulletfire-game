@@ -4856,16 +4856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 378ae91bb1bd8814bbcca7dc6bbb4b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapsObj:
-  - {fileID: 11400000, guid: 3028312f164b9224387c7230ee360879, type: 2}
-  - {fileID: 11400000, guid: 6a0224ca89118d340b222ef91f4e34fc, type: 2}
-  - {fileID: 11400000, guid: d94e97d2b343eed4a9dc93d0b4dd7e46, type: 2}
-  - {fileID: 11400000, guid: 340bad948e2b4fc4fa274a62ca71eb62, type: 2}
-  - {fileID: 11400000, guid: 4a4f19e600c363a42ad1b43e9a169f6b, type: 2}
-  - {fileID: 11400000, guid: ad8a64d18b4b1424f9ec102ef278ab63, type: 2}
-  - {fileID: 11400000, guid: 1b4dca81cc29fdd44beb22e566fcda66, type: 2}
-  equipmentObj:
-  - {fileID: 11400000, guid: 2953c268b2945f246ad0989cd47738f5, type: 2}
   lifeBar: {fileID: 3235390448477724272}
   pseudo: {fileID: 3235748120800679058}
   mapPointer:
@@ -4885,18 +4875,18 @@ MonoBehaviour:
   playerInput: {fileID: 6431756493290750073}
   playerMovement: {fileID: 5977103088287556885}
   playerWeapon: {fileID: 1088895015980004705}
-  playerUI: {fileID: 0}
-  mapCam: {fileID: 3235418924256254382}
-  money: 1000
   playerAnimator: {fileID: 7659890890979919164}
+  globalAnimator: {fileID: 3294096901588704704}
+  weapAnimator: {fileID: 3292559490149046160}
   weapons: {fileID: 3235522125278196736}
   skinBody: {fileID: 2309061181377788720}
   skinArms: {fileID: 2309061181377788686}
-  globalAnimator: {fileID: 3294096901588704704}
-  weapAnimator: {fileID: 3292559490149046160}
-  ik: {fileID: 7019471758111214257}
+  mapCam: {fileID: 3235418924256254382}
   emoteCamera: {fileID: 1579491917342650916}
   mainCamera: {fileID: 3235625105109754610}
+  playerUI: {fileID: 0}
+  money: 1000
+  ik: {fileID: 7019471758111214257}
 --- !u!114 &1088895015980004705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5016,18 +5006,10 @@ MonoBehaviour:
   lifebar: {fileID: 3457655694647291792}
   weaponHolder: {fileID: 3239065230050926696}
   equipmentHolder: {fileID: 3237478663717860776}
-  weapons:
-  - {fileID: 1306523742124632, guid: 09cbb4c2e64d4b14aa9a2b7721d5fd01, type: 3}
-  - {fileID: 1309904561135508, guid: d441a2a3e1aafa24c835e17a2ff902b1, type: 3}
-  - {fileID: 1731354488167064, guid: c5fcfab8fe12f104c8dfcd4e2ae65612, type: 3}
-  - {fileID: 1403574281316830, guid: 1fb593def0326314d8159d40fb6485b2, type: 3}
-  - {fileID: 1691796106642464, guid: b8964665a9b6b9246a6f0df12d1cec02, type: 3}
-  - {fileID: 1879564847104330, guid: 7c7307e2d1016634391b9048e37c2941, type: 3}
-  - {fileID: 1309904561135508, guid: d441a2a3e1aafa24c835e17a2ff902b1, type: 3}
-  equipments: []
   playerUI: {fileID: 0}
   skin1: {fileID: 2309061181377947472}
   skin2: {fileID: 2309061181377947438}
+  playerAtributes: {fileID: 8341955349082702667}
 --- !u!114 &1435923475190639892
 MonoBehaviour:
   m_ObjectHideFlags: 0

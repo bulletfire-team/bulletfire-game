@@ -3,25 +3,31 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d7f5b43df6673d43a003771e70d3b81, type: 3}
   m_Name: M4A1
   m_EditorClassIdentifier: 
-  type: 1
   weapName: M4A1
+  image: {fileID: 21300000, guid: a3f0ef7ab67bf4f4c8be934e632ad3b5, type: 3}
+  index: 1
+  weaponPrefab: {fileID: 1309904561135508, guid: d441a2a3e1aafa24c835e17a2ff902b1,
+    type: 3}
+  type: 1
   dammages: 20
-  bullet: {fileID: 54276348783466428, guid: 95a11502432fea64d815c4f2ba8add7c, type: 2}
+  bullet: {fileID: 54276348783466428, guid: 95a11502432fea64d815c4f2ba8add7c, type: 3}
   bulletSpeed: 100
   fireRate: 0.4
   range: 300
-  index: 1
   maxAmmo: 300
   maxLoader: 30
   reloadTime: 2
+  shotSound: 0
+  reloadSound: 0
   prices: e80300004c040000b00400001405000078050000dc05000040060000a4060000080700006c070000d00700003408000098080000fc08000060090000c4090000280a00008c0a0000f00a0000b80b0000
   dams: 14000000190000001e00000023000000280000002d00000032000000370000003c00000041000000460000004b00000050000000550000005a0000005f000000640000006e0000007300000078000000
   bspeeds:
@@ -66,16 +72,10 @@ MonoBehaviour:
   - 0.13
   - 0.12
   - 0.11
-  shotSound: 0
-  reloadSound: 0
-  image: {fileID: 21300000, guid: a3f0ef7ab67bf4f4c8be934e632ad3b5, type: 3}
   equipments:
   - equipment: {fileID: 11400000, guid: 1169c61b5dfd1114aa1089fac0e63eaf, type: 2}
     pos: {x: 0, y: 0.2402, z: 0.299}
     rot: {x: 0, y: 0, z: 0}
-  weaponPrefab: {fileID: 1309904561135508, guid: d441a2a3e1aafa24c835e17a2ff902b1,
-    type: 2}
   skins:
-  - {fileID: 2800000, guid: 0a15b6a81df89a9458e47a995480faa1, type: 3}
-  - {fileID: 2800000, guid: 7c44307bf5d86324ba108c346f065a03, type: 3}
-  skinsPrice: e8030000d0070000
+  - {fileID: 11400000, guid: 2fe828a7e7459a448961c53732439031, type: 2}
+  - {fileID: 11400000, guid: 1174ad6a6f4e14642aea5eb1ec18ba8e, type: 2}

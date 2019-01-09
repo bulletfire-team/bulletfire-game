@@ -18,6 +18,7 @@ public class MessageItem : MonoBehaviour
         this.msg = msg;
         pseudTxt.text = msg.Sender;
         msgTxt.text = msg.Message;
-        iconImg.sprite = server.playerIcons[msg.Icon];
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        iconImg.sprite = container.GetAvatarByIndex(msg.Icon).icon;
     }
 }

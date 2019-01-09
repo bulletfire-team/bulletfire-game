@@ -21,8 +21,6 @@ public class NetworkPlayer : NetworkBehaviour {
 
     public Transform weaponHolder;
     public Transform equipmentHolder;
-    public GameObject[] weapons;
-    public GameObject[] equipments;
 
     private bool isAlive = true;
 
@@ -30,6 +28,8 @@ public class NetworkPlayer : NetworkBehaviour {
 
     public Transform skin1;
     public Transform skin2;
+
+    public PlayerAtributes playerAtributes;
 
 
     IEnumerator Start () {
@@ -224,8 +224,8 @@ public class NetworkPlayer : NetworkBehaviour {
     public void CmdSpawnWeap(int index, bool isFirst, int skin)
     {
         GetComponent<PlayerAtributes>().weaponManager.EquipWeapon(index, isFirst);
-        NetworkWeapon weap = weapons[index].GetComponent<NetworkWeapon>();
-        GameObject weapObj = (GameObject)Instantiate(weapons[index], Vector3.zero, Quaternion.identity);
+        NetworkWeapon weap = playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab.GetComponent<NetworkWeapon>();
+        GameObject weapObj = (GameObject)Instantiate(playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab, Vector3.zero, Quaternion.identity);
         weapObj.GetComponent<NetworkWeapon>().parentNetId = this.netId;
         weapObj.GetComponent<NetworkWeapon>().isFirst = isFirst;
         weapObj.GetComponent<NetworkWeapon>().skin = skin;
@@ -313,16 +313,16 @@ public class NetworkPlayer : NetworkBehaviour {
     [Command]
     public void CmdImproveEquipment (int index)
     {
-        GetComponent<PlayerAtributes>().equipmentManager.ImproveEquipment(index);
+        playerAtributes.equipmentManager.ImproveEquipment(index);
     }
 
     [Command]
     public void CmdSpawnEquipment(int index)
     {
-        GetComponent<PlayerAtributes>().equipmentManager.Equip(index);
-        NetworkEquipment weap = equipments[index].GetComponent<NetworkEquipment>();
+        playerAtributes.equipmentManager.Equip(index);
+        NetworkEquipment weap = playerAtributes.itemsContainer.GetPlayerEquipmentByIndex(index).prefab.GetComponent<NetworkEquipment>();
         print(weap);
-        GameObject equipObj = Instantiate(equipments[index], Vector3.zero, Quaternion.identity);
+        GameObject equipObj = Instantiate(playerAtributes.itemsContainer.GetPlayerEquipmentByIndex(index).prefab, Vector3.zero, Quaternion.identity);
         print(equipObj);
         equipObj.GetComponent<NetworkEquipment>().parentNetId = this.netId;
         equipObj.name = index.ToString();

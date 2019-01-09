@@ -23,7 +23,8 @@ public class FriendItem : MonoBehaviour
         pseudo.text = friend.nickname;
         status.color = friend.isConnected ? Color.green : Color.red;
         Server server = GameObject.Find("Server").GetComponent<Server>();
-        icon.sprite = server.playerIcons[friend.icon];
+        ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        icon.sprite = container.GetAvatarByIndex(friend.icon).icon;
     }
 
     public void Disconnect ()
