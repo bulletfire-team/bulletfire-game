@@ -56,8 +56,6 @@ namespace Prototype.NetworkLobby
 
         protected LobbyHook _lobbyHooks;
 
-        public NetworkIdentity[] players;
-
         public bool isMM;
 
         public MatchMakingManager man;
@@ -243,6 +241,7 @@ namespace Prototype.NetworkLobby
 
         public override void OnStartHost()
         {
+            print("Start host");
             base.OnStartHost();
 
             ChangeTo(lobbyPanel);
@@ -252,6 +251,7 @@ namespace Prototype.NetworkLobby
 
 		public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
 		{
+            print("Match create");
 			base.OnMatchCreate(success, extendedInfo, matchInfo);
             _currentMatchID = (System.UInt64)matchInfo.networkId;
             if (isMM)

@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7f5b43df6673d43a003771e70d3b81, type: 3}
+  m_Name: AWP
+  m_EditorClassIdentifier: 
+  weapName: AWP
+  image: {fileID: 21300000, guid: 8447dd24000e1724495b030928c45b77, type: 3}
+  index: 5
+  weaponPrefab: {fileID: 1879564847104330, guid: 7c7307e2d1016634391b9048e37c2941,
+    type: 3}
+  type: 0
+  dammages: 20
+  bullet: {fileID: 54276348783466428, guid: 95a11502432fea64d815c4f2ba8add7c, type: 3}
+  bulletSpeed: 100
+  fireRate: 0.7
+  range: 300
+  maxAmmo: 300
+  maxLoader: 30
+  reloadTime: 2
+  shotSound: 0
+  reloadSound: 0
+  prices: e80300004c040000b00400001405000078050000dc05000040060000a4060000080700006c070000d00700003408000098080000fc08000060090000c4090000280a00008c0a0000f00a0000b80b0000
+  dams: 78000000820000008c00000096000000a0000000aa000000b4000000be000000c8000000d2000000dc000000e6000000f0000000fa000000040100000e01000018010000220100002c01000036010000
+  bspeeds:
+  - 100
+  - 110
+  - 120
+  - 130
+  - 140
+  - 150
+  - 160
+  - 170
+  - 180
+  - 190
+  - 200
+  - 210
+  - 220
+  - 230
+  - 240
+  - 250
+  - 260
+  - 270
+  - 280
+  - 290
+  frates:
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 3
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  - 2.5
+  equipments: []
+  skins: []
