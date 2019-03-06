@@ -229,24 +229,43 @@ public class NetworkPlayer : NetworkBehaviour {
     public void CmdSpawnWeap(int index, bool isFirst, int skin)
     {
         GetComponent<PlayerAtributes>().weaponManager.EquipWeapon(index, isFirst);
+        RpcSpawnWeap(index, isFirst, skin);
+        //NetworkWeapon weap = playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab.GetComponent<NetworkWeapon>();
+        //GameObject weapObj = (GameObject)Instantiate(playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab, Vector3.zero, Quaternion.identity);
+        //weapObj.GetComponent<NetworkWeapon>().parentNetId = this.netId;
+        //weapObj.GetComponent<NetworkWeapon>().isFirst = isFirst;
+        //weapObj.GetComponent<NetworkWeapon>().skin = skin;
+        //weapObj.name = index.ToString();
+        //NetworkServer.Spawn(weapObj);
+        //weapObj.transform.parent = weaponHolder;
+        //weapObj.transform.localPosition = weap.startPos;
+        //weapObj.transform.localRotation = Quaternion.Euler(weap.startRot);
+        //if (isFirst) weapObj.transform.SetAsFirstSibling();
+        //if (!isFirst) weapObj.transform.SetAsLastSibling();
+    }
+
+    [ClientRpc]
+    public void RpcSpawnWeap (int index, bool isFirst, int skin)
+    {
         NetworkWeapon weap = playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab.GetComponent<NetworkWeapon>();
-        GameObject weapObj = (GameObject)Instantiate(playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab, Vector3.zero, Quaternion.identity);
-        weapObj.GetComponent<NetworkWeapon>().parentNetId = this.netId;
+        GameObject weapObj = Instantiate(playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab, Vector3.zero, Quaternion.identity);
         weapObj.GetComponent<NetworkWeapon>().isFirst = isFirst;
         weapObj.GetComponent<NetworkWeapon>().skin = skin;
         weapObj.name = index.ToString();
-        NetworkServer.Spawn(weapObj);
         weapObj.transform.parent = weaponHolder;
         weapObj.transform.localPosition = weap.startPos;
         weapObj.transform.localRotation = Quaternion.Euler(weap.startRot);
         if (isFirst) weapObj.transform.SetAsFirstSibling();
         if (!isFirst) weapObj.transform.SetAsLastSibling();
+        GetComponent<PlayerWeapon>().OnSwitchWeapon(0);
     }
 
     [Command]
     public void CmdDestroyWeap(bool isFirst)
     {
-        int index = isFirst ? 0 : 1;
+        RpcDestroyWeap(isFirst);
+        
+        /*int index = isFirst ? 0 : 1;
         if(weaponHolder.childCount > index)
         {
             Transform toDestroy = weaponHolder.GetChild(index);
@@ -254,8 +273,21 @@ public class NetworkPlayer : NetworkBehaviour {
             int.TryParse(toDestroy.name, out numWeap);
             NetworkServer.Destroy(toDestroy.gameObject);
             GetComponent<PlayerAtributes>().weaponManager.UnequipWeapon(numWeap);
+        }*/
+    }
+
+    [ClientRpc]
+    public void RpcDestroyWeap (bool isFirst)
+    {
+        int index = isFirst ? 0 : 1;
+        if (weaponHolder.childCount > index)
+        {
+            Transform toDestroy = weaponHolder.GetChild(index);
+            int numWeap = -1;
+            int.TryParse(toDestroy.name, out numWeap);
+            Destroy(toDestroy.gameObject);
+            if(isServer) GetComponent<PlayerAtributes>().weaponManager.UnequipWeapon(numWeap);
         }
-        
     }
 
     [Command]
@@ -326,15 +358,19 @@ public class NetworkPlayer : NetworkBehaviour {
     {
         playerAtributes.equipmentManager.Equip(index);
         NetworkEquipment weap = playerAtributes.itemsContainer.GetPlayerEquipmentByIndex(index).prefab.GetComponent<NetworkEquipment>();
-        print(weap);
         GameObject equipObj = Instantiate(playerAtributes.itemsContainer.GetPlayerEquipmentByIndex(index).prefab, Vector3.zero, Quaternion.identity);
-        print(equipObj);
         equipObj.GetComponent<NetworkEquipment>().parentNetId = this.netId;
         equipObj.name = index.ToString();
         NetworkServer.Spawn(equipObj);
         equipObj.transform.parent = equipmentHolder;
         equipObj.transform.localPosition = weap.startPos;
         equipObj.transform.localRotation = Quaternion.Euler(weap.startRot);
+    }
+
+    [ClientRpc]
+    public void RpcSpawnEquipment (int index)
+    {
+
     }
 
     #endregion

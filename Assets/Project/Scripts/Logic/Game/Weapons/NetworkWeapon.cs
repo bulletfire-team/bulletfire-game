@@ -1,31 +1,30 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkWeapon : NetworkBehaviour
+public class NetworkWeapon : MonoBehaviour
 {
-    [SyncVar]
     public Vector3 startPos;
 
-    [SyncVar]
     public Vector3 startRot;
 
-    [SyncVar]
-    public NetworkInstanceId parentNetId;
+    //[SyncVar]
+    //public NetworkInstanceId parentNetId;
 
-    [SyncVar]
+    //[SyncVar]
     public bool isFirst = false;
 
-    [SyncVar]
+    //[SyncVar]
     public int skin = -1;
 
 
     public void Start ()
     {
-        GameObject parentObj = ClientScene.FindLocalObject(parentNetId);
+        /*GameObject parentObj = ClientScene.FindLocalObject(parentNetId);
         Transform weapPlace = parentObj.GetComponent<NetworkPlayer>().weaponHolder;
         transform.SetParent(weapPlace);
         transform.localPosition = startPos;
         transform.localRotation = Quaternion.Euler(startRot);
+        */
         if(skin != -1)
         {
             foreach (Transform item in transform)
@@ -37,9 +36,11 @@ public class NetworkWeapon : NetworkBehaviour
                 }
             }
         }
+        
         if (isFirst) transform.SetAsFirstSibling();
         if (!isFirst) transform.SetAsLastSibling();
         if (!isFirst) gameObject.SetActive(false);
-        parentObj.GetComponent<PlayerWeapon>().OnSwitchWeapon(0);
+        /*
+        parentObj.GetComponent<PlayerWeapon>().OnSwitchWeapon(0);*/
     }
 }

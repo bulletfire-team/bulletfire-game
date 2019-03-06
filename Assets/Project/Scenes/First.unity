@@ -321,8 +321,8 @@ MonoBehaviour:
     unlockplayerequipmentskin: []
   url: http://socket.bulletfire.fr/
   keepCo: 0
-  vcURL: http://51.254.95.174/launcherapp/checkversion
-  versionIdentifier: 7d67d9e7-beb1-4154-8112-89ac7035387e
+  vcURL: http://admin.bulletfire.fr/launcherapp/checkversion/win
+  versionIdentifier: a714195d-a685-4d5c-af25-76e374b26e8c
 --- !u!4 &141381025
 Transform:
   m_ObjectHideFlags: 0
