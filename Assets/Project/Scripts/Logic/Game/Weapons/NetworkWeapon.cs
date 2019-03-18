@@ -17,7 +17,7 @@ public class NetworkWeapon : MonoBehaviour
     public int skin = -1;
 
 
-    public void Start ()
+    public void DoIt ()
     {
         /*GameObject parentObj = ClientScene.FindLocalObject(parentNetId);
         Transform weapPlace = parentObj.GetComponent<NetworkPlayer>().weaponHolder;
@@ -37,9 +37,6 @@ public class NetworkWeapon : MonoBehaviour
             }
         }
         
-        if (isFirst) transform.SetAsFirstSibling();
-        if (!isFirst) transform.SetAsLastSibling();
-        if (!isFirst) gameObject.SetActive(false);
         /*
         parentObj.GetComponent<PlayerWeapon>().OnSwitchWeapon(0);*/
     }

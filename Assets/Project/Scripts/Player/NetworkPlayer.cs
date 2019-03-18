@@ -44,8 +44,8 @@ public class NetworkPlayer : NetworkBehaviour {
             came.SetActive(true);
             skin1.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
-            int skin = GameObject.Find("ItemManager").GetComponent<ItemManager>().GetSkin(0);
-            CmdSpawnWeap(0, true, skin);
+            
+            
             GameObject.Find("BuyMenu").GetComponent<Buy>().SetLocalPlayer(gameObject);
             GameObject.Find("BuyMenu").SetActive(false);
             Cursor.visible = false;
@@ -222,6 +222,13 @@ public class NetworkPlayer : NetworkBehaviour {
         playerUI.gameObject.SetActive(true);
         came.SetActive(true);
         GetComponent<Player>().UnfreezePlayer();
+        CmdRespawn();
+    }
+
+    [Command]
+    public void CmdRespawn ()
+    {
+        isAlive = true;
     }
 
     #region Commands
@@ -247,17 +254,22 @@ public class NetworkPlayer : NetworkBehaviour {
     [ClientRpc]
     public void RpcSpawnWeap (int index, bool isFirst, int skin)
     {
-        NetworkWeapon weap = playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab.GetComponent<NetworkWeapon>();
         GameObject weapObj = Instantiate(playerAtributes.itemsContainer.GetWeaponByIndex(index).weaponPrefab, Vector3.zero, Quaternion.identity);
+        NetworkWeapon weap = weapObj.GetComponent<NetworkWeapon>();
         weapObj.GetComponent<NetworkWeapon>().isFirst = isFirst;
         weapObj.GetComponent<NetworkWeapon>().skin = skin;
+        weapObj.GetComponent<NetworkWeapon>().DoIt();
         weapObj.name = index.ToString();
         weapObj.transform.parent = weaponHolder;
         weapObj.transform.localPosition = weap.startPos;
         weapObj.transform.localRotation = Quaternion.Euler(weap.startRot);
         if (isFirst) weapObj.transform.SetAsFirstSibling();
         if (!isFirst) weapObj.transform.SetAsLastSibling();
-        GetComponent<PlayerWeapon>().OnSwitchWeapon(0);
+        if (isLocalPlayer)
+        {
+            GetComponent<PlayerWeapon>().SwitchWeaponIndex(0);
+        }
+        
     }
 
     [Command]

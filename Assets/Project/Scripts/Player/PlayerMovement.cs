@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 _moveH = transform.right * _xM;
         Vector3 _moveV = transform.forward * _zM;
         //normalisation des 2 composantes en 1 V3D
-        Vector3 _velocity = (_moveH + _moveV) * speed;
+        Vector3 _velocity = (_moveH + _moveV).normalized * speed;
         Vector3 _move = new Vector3(_xM, 0, _zM);
         //_velocity = transform.TransformDirection(_velocity);
         // Animations
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //on déplace le joueur
             //transform.Translate(_move * speed * Time.deltaTime);
-            rb.MovePosition(rb.position + _velocity * Time.deltaTime);
+            rb.MovePosition(rb.position + _velocity * Time.fixedDeltaTime);
             if (!isMoving)
             {
                 int clip = Random.Range(0, 3);

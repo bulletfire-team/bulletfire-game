@@ -51,6 +51,8 @@ public class PlayerUI : MonoBehaviour {
 
     public GameObject quoteMenu;
 
+    public GameObject tagMenu;
+
     [Header("Weapons")]
     public TextMeshProUGUI firstName;
     public TextMeshProUGUI secondName;

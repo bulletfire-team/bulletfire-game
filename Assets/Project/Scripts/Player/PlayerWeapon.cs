@@ -9,8 +9,7 @@ public class PlayerWeapon : NetworkBehaviour
     private MyNetworkAudioManager audioManager;
 
     [Header("Weapon")]
-    [SyncVar(hook="OnSwitchWeapon")]
-    public int currentWeapon = 0;  //num de l'arme actuelle (toutes les armes auront un num)
+    public int currentWeapon = -1;  //num de l'arme actuelle (toutes les armes auront un num)
     public int maxWeapons = 0; // nombre d'armes maximum pour un joueur
     public Transform weaponHolder;
     public WeaponHolder curWeapon;
@@ -386,13 +385,13 @@ public class PlayerWeapon : NetworkBehaviour
     [Command]
     public void CmdSelectWeapon (int index)
     {
-        currentWeapon = index;
-        OnSwitchWeapon(index);
+        RpcOnSwitchWeapon(index);
     }
 
-    public void OnSwitchWeapon(int newWeapon)
+    [ClientRpc]
+    public void RpcOnSwitchWeapon(int newWeapon)
     {
-
+        currentWeapon = newWeapon;
         for (var i = 0; i < weaponHolder.childCount; i++)
         {
             //Activer l'arme selectionne

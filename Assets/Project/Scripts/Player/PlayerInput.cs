@@ -27,7 +27,7 @@ public class PlayerInput : NetworkBehaviour
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!canMove) return;
         // Move
@@ -174,6 +174,17 @@ public class PlayerInput : NetworkBehaviour
         if (Input.GetKeyUp(KeyCode.K))
         {
             playerAtributes.playerUI.quoteMenu.SetActive(false);
+        }
+
+        // Tags
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            playerAtributes.playerUI.tagMenu.SetActive(true);
+        }
+
+        if (Input.GetKeyUp(KeyCode.J))
+        {
+            playerAtributes.playerUI.tagMenu.SetActive(false);
         }
     }
 }

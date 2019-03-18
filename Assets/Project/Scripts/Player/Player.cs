@@ -24,6 +24,8 @@ public class Player : NetworkBehaviour
     private PlayerUI playerUI;
     private PlayerUIMenu playerUIMenu;
 
+    public bool gameStart = false;
+
     private void Start()
     {
         playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
@@ -80,6 +82,12 @@ public class Player : NetworkBehaviour
     public void TargetBeginRound (NetworkConnection target, int redScore, int blueScore, int nbRed, int nbBlue)
     {
         if (!isLocalPlayer) return;
+        if(!gameStart)
+        {
+            int skin = GameObject.Find("ItemManager").GetComponent<ItemManager>().GetSkin(0);
+            GetComponent<NetworkPlayer>().CmdSpawnWeap(0, true, skin);
+            gameStart = true;
+        }
         FreezePlayer();
         if (isDead)
         {

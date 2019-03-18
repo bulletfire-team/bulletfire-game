@@ -15,6 +15,7 @@ public class ItemsContainer : MonoBehaviour
     [Header("Playable")]
     public Emote[] emotes;
     public Quote[] quotes;
+    public Tag[] tags; 
 
     [Header("Avatar")]
     public Avatar[] avatars;
@@ -109,6 +110,19 @@ public class ItemsContainer : MonoBehaviour
     public Quote GetQuoteByIndex (int index)
     {
         foreach(Quote item in quotes)
+        {
+            if(item.index == index)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    // Tag
+    public Tag GetTagByIndex (int index)
+    {
+        foreach(Tag item in tags)
         {
             if(item.index == index)
             {

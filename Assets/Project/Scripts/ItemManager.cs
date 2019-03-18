@@ -12,6 +12,9 @@ public class ItemManager : MonoBehaviour {
 
     [Header("Quote")]
     public int[] quotes;
+
+    [Header("Tag")]
+    public int[] tags;
     
 
     void Start () {
@@ -19,6 +22,7 @@ public class ItemManager : MonoBehaviour {
         GetCharacterSkin();
         GetEmotes();
         GetQuotes();
+        GetTags();
 	}
 
     #region Character Skin
@@ -138,6 +142,36 @@ public class ItemManager : MonoBehaviour {
         PlayerPrefs.SetInt("Quote2", quotes[1]);
         PlayerPrefs.SetInt("Quote3", quotes[2]);
         PlayerPrefs.SetInt("Quote4", quotes[3]);
+    }
+    #endregion
+
+    #region Tags
+    private void GetTags ()
+    {
+        if (PlayerPrefs.HasKey("Tag1"))
+        {
+            tags[0] = PlayerPrefs.GetInt("Tag1");
+        }
+        if (PlayerPrefs.HasKey("Tag2"))
+        {
+            tags[1] = PlayerPrefs.GetInt("Tag2");
+        }
+        if (PlayerPrefs.HasKey("Tag3"))
+        {
+            tags[2] = PlayerPrefs.GetInt("Tag3");
+        }
+        if (PlayerPrefs.HasKey("Tag4"))
+        {
+            tags[3] = PlayerPrefs.GetInt("Tag4");
+        }
+    }
+
+    public void SaveTags ()
+    {
+        PlayerPrefs.SetInt("Tag1", tags[0]);
+        PlayerPrefs.SetInt("Tag2", tags[1]);
+        PlayerPrefs.SetInt("Tag3", tags[2]);
+        PlayerPrefs.SetInt("Tag4", tags[3]);
     }
     #endregion
 

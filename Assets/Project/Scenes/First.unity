@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -35,10 +35,10 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -322,7 +322,7 @@ MonoBehaviour:
   url: http://socket.bulletfire.fr/
   keepCo: 0
   vcURL: http://admin.bulletfire.fr/launcherapp/checkversion/win
-  versionIdentifier: a714195d-a685-4d5c-af25-76e374b26e8c
+  versionIdentifier: 65cbfcc3-968e-4ebb-9a5c-bd46cafa8577
 --- !u!4 &141381025
 Transform:
   m_ObjectHideFlags: 0
@@ -887,6 +887,7 @@ MonoBehaviour:
   characterSkin: 0
   emotes: 00000000000000000000000000000000
   quotes: 00000000000000000000000000000000
+  tags: 
 --- !u!4 &1718547172
 Transform:
   m_ObjectHideFlags: 0
@@ -1025,7 +1026,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 340bad948e2b4fc4fa274a62ca71eb62, type: 2}
   - {fileID: 11400000, guid: 4a4f19e600c363a42ad1b43e9a169f6b, type: 2}
   - {fileID: 11400000, guid: ad8a64d18b4b1424f9ec102ef278ab63, type: 2}
-  - {fileID: 11400000, guid: 1b4dca81cc29fdd44beb22e566fcda66, type: 2}
   playerEquipments:
   - {fileID: 11400000, guid: 2953c268b2945f246ad0989cd47738f5, type: 2}
   weaponSkins: []
@@ -1068,6 +1068,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8a395b1bf06678e41b60e14cb4912904, type: 2}
   - {fileID: 11400000, guid: 3b08b54e25c889c40a3c0c5c07deae5a, type: 2}
   - {fileID: 11400000, guid: 95690fa2117f87142ad3b21f03cf00e8, type: 2}
+  tags:
+  - {fileID: 11400000, guid: 052511f745fc8a144afbb604eb671d32, type: 2}
+  - {fileID: 11400000, guid: 539ab7eee6714a84d9d3078d2ac666ae, type: 2}
+  - {fileID: 11400000, guid: 6a9dab4cabd0e344286a75ec749cfe6a, type: 2}
+  - {fileID: 11400000, guid: af91226f7317a6b4fb24af27ea32d0de, type: 2}
   avatars:
   - {fileID: 11400000, guid: f6d6a401cbfd10543a106df458440734, type: 2}
   - {fileID: 11400000, guid: 2821d37aef0cd094aa6101af07bfcbbb, type: 2}
