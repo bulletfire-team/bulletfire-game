@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a970291fb63494cb8416a13b7a5575, type: 3}
   m_Name: BulletfireLogoWhite
   m_EditorClassIdentifier: 
-  tag: {fileID: 2100000, guid: f3da0f1692f00e8468b92dba2eb50d32, type: 2}
+  tag: {fileID: 7375315495452383738, guid: 2755d1f7d90c7ca4090f372e9fa34695, type: 3}
   icon: {fileID: 21300000, guid: 7f2a9167483e80b49bdb8a94c38c5ee5, type: 3}
   name: Bulletfire logo white
-  index: 2
+  index: 3
   buyable: 1
   price: 0

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a970291fb63494cb8416a13b7a5575, type: 3}
   m_Name: BulletfireBlack
   m_EditorClassIdentifier: 
-  tag: {fileID: 2100000, guid: d48c24f89b5bc39449d2bc4fecc1f617, type: 2}
+  tag: {fileID: 1281123491172599967, guid: 9eb558112cf9cc2498da38b81709b345, type: 3}
   icon: {fileID: 21300000, guid: e33931e2114a14443ba644eda90f9619, type: 3}
   name: Bulletfire black
-  index: 0
+  index: 1
   buyable: 1
   price: 0

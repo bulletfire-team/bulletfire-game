@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class PlayerTag : NetworkBehaviour
 {
@@ -23,22 +22,22 @@ public class PlayerTag : NetworkBehaviour
         {
             if(hit.transform.tag == "Untagged")
             {
-                CmdPrintTag(index, hit.point, hit.transform.rotation);
+                CmdPrintTag(index, hit.point, hit.normal);
             }
         }
     }
 
     [Command]
-    public void CmdPrintTag(int index, Vector3 pos, Quaternion rot)
+    public void CmdPrintTag(int index, Vector3 pos, Vector3 rot)
     {
         RpcPrintTag(index, pos, rot);
     }
 
     [ClientRpc]
-    public void RpcPrintTag (int index, Vector3 pos, Quaternion rot)
+    public void RpcPrintTag (int index, Vector3 pos, Vector3 rot)
     {
         Tag tag = attr.itemsContainer.GetTagByIndex(index);
-        GameObject g = Instantiate(tagContainer, pos, rot);
-        g.GetComponent<DecalProjectorComponent>().m_Material = tag.tag;
+        GameObject g = Instantiate(tag.tag, pos, Quaternion.identity);
+        g.transform.right = rot;
     }
 }

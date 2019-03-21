@@ -8,10 +8,8 @@ public class NetworkPlayer : NetworkBehaviour {
 
 	public GameObject came;
 
-    [SyncVar(hook="OnChangeHealth")]
     public int health = 100;
 
-    [SyncVar(hook = "OnDie")]
     public int life = 3;
 
     public RectTransform lifebar;
@@ -38,11 +36,15 @@ public class NetworkPlayer : NetworkBehaviour {
             GameManager gm = gameObject.AddComponent<GameManager>();
             gm.SetInstance(gm);
         }
+
         if(isServer) GameManager.instance.RegisterPlayer(GetComponent<NetworkIdentity>().netId.ToString(), GetComponent<Player>());
-        if (isLocalPlayer){
+
+        if (isLocalPlayer) {
+
             GetComponent<AudioListener>().enabled = true;
             came.SetActive(true);
             skin1.gameObject.SetActive(false);
+
             yield return new WaitForSeconds(1f);
             
             
@@ -51,12 +53,14 @@ public class NetworkPlayer : NetworkBehaviour {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             CmdChangeSkin(GameObject.Find("ItemManager").GetComponent<ItemManager>().characterSkin);
+
             foreach (Image item in GetComponent<PlayerAtributes>().mapPointer)
             {
                 item.gameObject.SetActive(true);
             }
         }
         yield return new WaitForSeconds(1f);
+
         if (isLocalPlayer) {
             if(GetComponent<Player>().team == "red")
             {
@@ -81,16 +85,20 @@ public class NetworkPlayer : NetworkBehaviour {
         if (health <= 0) return 0;
         if (killerNetId == GetComponent<NetworkIdentity>().netId.ToString() && type == 1) return 0;
         health -= dam;
-        if(health <= 0){
+        
+        if (health <= 0){
             if (isAlive)
             {
                 isAlive = false;
                 life--;
+                RpcOnDie(life);
                 if (life > 0)
                 {
                     RpcRespawn();
                     health = 100;
                     GameManager.instance.PlayerGone(GetComponent<NetworkIdentity>().netId.ToString(), killerNetId);
+                    StartCoroutine(CmdRespawn());
+                    RpcOnChangeHealth(health);
                     return 3;
                 }
                 else
@@ -99,6 +107,7 @@ public class NetworkPlayer : NetworkBehaviour {
                     RpcRealDead();
                     health = 100;
                     GameManager.instance.PlayerDied(GetComponent<NetworkIdentity>().netId.ToString(), killerNetId);
+                    RpcOnChangeHealth(health);
                     return 2;
                 }
             }
@@ -106,11 +115,13 @@ public class NetworkPlayer : NetworkBehaviour {
             {
                 health = 100;
             }
+            RpcOnChangeHealth(health);
             return 0;
         }
         else
         {
             TargetGetHit(connectionToClient, pos);
+            RpcOnChangeHealth(health);
             return 1;
         }
     }
@@ -121,7 +132,9 @@ public class NetworkPlayer : NetworkBehaviour {
         GameObject.Find("PlayerUI").GetComponent<PlayerUI>().damageIndicatorScript.SetTarget(targetPos);
     }
 
-    void OnChangeHealth(int li){
+    [ClientRpc]
+    public void RpcOnChangeHealth(int li){
+        health = li;
     	float newL = (float)li/100f;
     	lifebar.sizeDelta = new Vector2(newL*1.5f, lifebar.sizeDelta.y);
         if (isLocalPlayer)
@@ -133,8 +146,10 @@ public class NetworkPlayer : NetworkBehaviour {
         }
     }
 
-    void OnDie (int lif)
+    [ClientRpc]
+    public void RpcOnDie (int lif)
     {
+        life = lif;
         if(isLocalPlayer)
         {
             if (playerUI == null) playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
@@ -169,15 +184,16 @@ public class NetworkPlayer : NetworkBehaviour {
     [ClientRpc]
     public void RpcChangeSkin (int skin)
     {
-        //Material mat = GameObject.Find("Server").GetComponent<Server>().characterSkins[skin];
-        //this.skin1.GetComponent<Renderer>().material = mat;
-        //this.skin2.GetComponent<Renderer>().material = mat;
+        Material mat = GameObject.Find("Items").GetComponent<ItemsContainer>().GetCharacterSkinByIndex(skin).mat;
+        this.skin1.GetComponent<Renderer>().material = mat;
+        this.skin2.GetComponent<Renderer>().material = mat;
     }
 
     public void Respawn (bool isStart = false)
     {
         if (isLocalPlayer)
         {
+            GetComponent<PlayerWeapon>().Aim(false);
             if (!isStart)
             {
                 transform.position = new Vector3(0, -100, 0);
@@ -222,12 +238,11 @@ public class NetworkPlayer : NetworkBehaviour {
         playerUI.gameObject.SetActive(true);
         came.SetActive(true);
         GetComponent<Player>().UnfreezePlayer();
-        CmdRespawn();
     }
 
-    [Command]
-    public void CmdRespawn ()
+    public IEnumerator CmdRespawn ()
     {
+        yield return new WaitForSeconds(5);
         isAlive = true;
     }
 

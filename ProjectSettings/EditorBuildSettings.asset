@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_TOREMOVE/Demo_Map/demo_map.unity
     guid: 666450363bd4a9743baf10e3b152efbd
-  - enabled: 0
+  - enabled: 1
     path: Assets/Project/Scenes/Desert_Map.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1

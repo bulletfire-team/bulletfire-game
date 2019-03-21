@@ -56,16 +56,12 @@ public class PlayerWeapon : NetworkBehaviour
     [HideInInspector] public PlayerAtributes playerAtributes;
     [HideInInspector] public PlayerUI playerUI;
 
-    [SyncVar(hook="OnCut")]
     public bool isCutting = false;
 
-    [SyncVar(hook = "OnThrow")]
     public bool isThrowing = false;
 
-    [SyncVar(hook = "OnThrowSmoke")]
     public bool isThrowingSmoke = false;
 
-    [SyncVar(hook = "OnReload")]
     public bool isReload = false;
 
     void Start()
@@ -87,7 +83,7 @@ public class PlayerWeapon : NetworkBehaviour
                 canCut = false;
                 canShot = false;
                 StartCoroutine(waitFireRate());
-                CmdShot();
+                CmdShot(cam.position, cam.forward);
                 camMouseLook.Shot(recul);
                 weapMouseLook.Shot(recul);
             }
@@ -136,13 +132,13 @@ public class PlayerWeapon : NetworkBehaviour
     }
 
     [Command]
-    void CmdShot()
+    void CmdShot(Vector3 campos, Vector3 forward)
     {
         audioManager.CmdPlay("Shot", curWeapon.weapon.shotSound);
         weapManagerAnim.RpcSetTrigger("Shot");
         RaycastHit hit;
-        Debug.DrawRay(cam.position, cam.forward, Color.red);
-        if(Physics.Raycast(cam.position, cam.forward, out hit, curWeapon.weapon.range, mask))
+        Debug.DrawRay(campos, forward, Color.red);
+        if(Physics.Raycast(campos, forward, out hit, curWeapon.weapon.range, mask))
         {
             if(hit.collider.tag == "RedTeam" || hit.collider.tag == "BlueTeam")
             {
@@ -206,12 +202,13 @@ public class PlayerWeapon : NetworkBehaviour
     public void CmdCut ()
     {
         isCutting = !isCutting;
-        OnCut(true);
+        RpcOnCut(isCutting);
     }
 
-    
-    public void OnCut (bool cut)
+    [ClientRpc]
+    public void RpcOnCut (bool cut)
     {
+        isCutting = cut;
         curLeftIk = ik.leftHandObj;
         ik.leftHandObj = cutLeftIk;
         StartCoroutine(waitCutRate());
@@ -254,11 +251,13 @@ public class PlayerWeapon : NetworkBehaviour
     public void CmdLaunchGrenade()
     {
         isThrowing = !isThrowing;
-        //OnThrow(true);
+        RpcOnThrow(isThrowing);
     }
 
-    public void OnThrow(bool throwi)
+    [ClientRpc]
+    public void RpcOnThrow(bool throwi)
     {
+        isThrowing = throwi;
         curLeftIk = ik.leftHandObj;
         ik.leftHandObj = cutLeftIk;
         StartCoroutine(waitGrenade());
@@ -307,10 +306,13 @@ public class PlayerWeapon : NetworkBehaviour
     public void CmdLaunchSmokeGrenade()
     {
         isThrowingSmoke = !isThrowingSmoke;
+        RpcOnThrowSmoke(isThrowingSmoke);
     }
 
-    public void OnThrowSmoke (bool throwi)
+    [ClientRpc]
+    public void RpcOnThrowSmoke (bool throwi)
     {
+        isThrowingSmoke = throwi;
         curLeftIk = ik.leftHandObj;
         ik.leftHandObj = curLeftIk;
         StartCoroutine(waitSmokeGrenade());
@@ -425,14 +427,17 @@ public class PlayerWeapon : NetworkBehaviour
         }
     }
 
+    [Command]
     public void CmdReload()
     {
         isReload = !isReload;
-        OnReload(true);
+        RpcOnReload(isReload);
     }
 
-    public void OnReload (bool re)
+    [ClientRpc]
+    public void RpcOnReload (bool re)
     {
+        isReload = re;
         curWeapon.anim.Play();
     }
 
@@ -472,6 +477,7 @@ public class PlayerWeapon : NetworkBehaviour
     #region Aim
     public void Aim (bool status)
     {
+        if (curWeapon == null) return;
         isAiming = status;
         weapManagerAnim.CmdSetBool("Aim", isAiming);
         playerUI.reticle.SetActive(!isAiming);

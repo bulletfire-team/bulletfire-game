@@ -88,6 +88,7 @@ public class Player : NetworkBehaviour
             GetComponent<NetworkPlayer>().CmdSpawnWeap(0, true, skin);
             gameStart = true;
         }
+        GetComponent<PlayerWeapon>().Aim(false);
         FreezePlayer();
         if (isDead)
         {
@@ -135,7 +136,7 @@ public class Player : NetworkBehaviour
         isDead = false;
         // Respawn
         NetworkPlayer myNP = GetComponent<NetworkPlayer>();
-        myNP.Respawn(true);
+        StartCoroutine(myNP.CmdRespawn());
         // Start counter
         GameObject.Find("PlayerUI").GetComponent<PlayerUI>().timerTxt.gameObject.SetActive(true);
         StartCoroutine(waitStartRound());
@@ -202,10 +203,10 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetEndGame (NetworkConnection target, bool isRedTeam)
+    public void TargetEndGame (NetworkConnection target, bool doWin)
     {
         FreezePlayer();
-        if(team == "red" && isRedTeam || team == "blue" && !isRedTeam)
+        if(doWin)
         {
             GameObject.Find("PlayerUI").GetComponent<PlayerUI>().victoryTxt.SetActive(true);
         }
@@ -273,6 +274,7 @@ public class Player : NetworkBehaviour
     {
         NetworkPlayer myNP = GetComponent<NetworkPlayer>();
         myNP.health = GetComponent<PlayerAtributes>().equipmentManager.GetResistance() + 100;
+        myNP.RpcOnChangeHealth(myNP.health);
     }
 
     [Command]
@@ -281,6 +283,7 @@ public class Player : NetworkBehaviour
         // Reset player attributes
         NetworkPlayer myNP = GetComponent<NetworkPlayer>();
         myNP.life = 3;
+        myNP.RpcOnDie(3);
     }
 
     public void ShowPseudo()

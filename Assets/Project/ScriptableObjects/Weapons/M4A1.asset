@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M4A1
   m_EditorClassIdentifier: 
   weapName: M4A1
-  image: {fileID: 21300000, guid: a3f0ef7ab67bf4f4c8be934e632ad3b5, type: 3}
+  image: {fileID: 21300000, guid: ffb6446a4d52e7e45879e39870b5e3f8, type: 3}
   index: 1
   weaponPrefab: {fileID: 1309904561135508, guid: d441a2a3e1aafa24c835e17a2ff902b1,
     type: 3}

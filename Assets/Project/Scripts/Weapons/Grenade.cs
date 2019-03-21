@@ -19,27 +19,25 @@ public class Grenade : MonoBehaviour {
         StartCoroutine(Explosion());
     }
 
-    IEnumerator Explosion ()
+    IEnumerator Explosion()
     {
         yield return new WaitForSeconds(sec);
         boom = true;
         Instantiate(particle, transform.position, transform.rotation);
-        yield return new WaitForEndOfFrame();
-        Destroy(gameObject);
-    }
-
-    private void OnTriggerStay (Collider other)
-    {
-        if (!boom) return;
-        
-        if(other.CompareTag("Player"))
+        RaycastHit[] hits;
+        hits = Physics.SphereCastAll(transform.position, 10, Vector3.forward);
+        foreach (RaycastHit hit in hits)
         {
-            NetworkPlayer o = other.GetComponent<NetworkPlayer>();
-            if (o!= null)
+            if (hit.transform.tag == "Player")
             {
-                o.GetDammages(dammages, netIdPlayer, transform.position, 2);
+                NetworkPlayer o = hit.transform.GetComponent<NetworkPlayer>();
+                if (o != null)
+                {
+                    o.GetDammages(dammages, netIdPlayer, transform.position, 2);
+                }
             }
         }
+        Destroy(gameObject);
     }
 
 }

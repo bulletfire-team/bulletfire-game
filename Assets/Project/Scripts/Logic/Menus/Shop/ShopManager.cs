@@ -91,6 +91,25 @@ public class ShopManager : MonoBehaviour
     public TMP_Text quoteTxt3;
     public TMP_Text quoteTxt4;
 
+    [Header("Tag system")]
+    public Transform tagContainer;
+    public GameObject tagItem;
+    private Tag selectTag = null;
+    public Transform tagPlace;
+    public TMP_Text tagBuyBut;
+    public GameObject tagObtain;
+    public GameObject tagChest;
+    public GameObject tagEquip;
+    public Image tagImg1;
+    public Image tagImg2;
+    public Image tagImg3;
+    public Image tagImg4;
+    public TMP_Text tagTxt1;
+    public TMP_Text tagTxt2;
+    public TMP_Text tagTxt3;
+    public TMP_Text tagTxt4;
+    public GameObject tagStuff;
+
 
     [Header("Weapon")]
     private Weapon[] weapons;
@@ -109,6 +128,7 @@ public class ShopManager : MonoBehaviour
         skinStuff.SetActive(false);
         playerForEmoteStuff.SetActive(false);
         peStuff.SetActive(false);
+        tagStuff.SetActive(false);
     }
 
     private void Start()
@@ -182,6 +202,19 @@ public class ShopManager : MonoBehaviour
             GameObject o = Instantiate(quoteItem, quoteContainer);
             o.GetComponent<ShopQuoteItem>().Init(item, this);
         }
+
+        /* ### Tag ### */
+        Tag[] tags = GameObject.Find("Items").GetComponent<ItemsContainer>().tags;
+        foreach (Transform item in tagContainer)
+        {
+            Destroy(item);
+        }
+
+        foreach (Tag item in tags)
+        {
+            GameObject o = Instantiate(tagItem, tagContainer);
+            o.GetComponent<ShopTagItem>().Init(item, this);
+        }
         
     }
 
@@ -221,7 +254,7 @@ public class ShopManager : MonoBehaviour
             Renderer re = item.GetComponent<Renderer>();
             if(re != null)
             {
-                re.material.mainTexture = texture;
+                re.material.SetTexture("_BaseColorMap", texture);
             }
         }
         ItemsContainer container = GameObject.Find("Items").GetComponent<ItemsContainer>();
@@ -633,6 +666,102 @@ public class ShopManager : MonoBehaviour
         {
             quoteImg4.sprite = cont.GetQuoteByIndex(quotes[3]).icon;
             quoteTxt4.text = cont.GetQuoteByIndex(quotes[3]).name;
+        }
+    }
+    #endregion
+
+    #region Tag 
+    public void SelectTag (Tag tag)
+    {
+        selectTag = tag;
+        Destroy(tagPlace.GetChild(0).gameObject);
+        GameObject g = Instantiate(tag.tag, tagPlace);
+        g.transform.localPosition = Vector3.zero;
+        g.transform.localRotation = Quaternion.identity;
+        if (server.player.GetUnlockTags().Contains(selectTag.index))
+        {
+            tagBuyBut.transform.parent.gameObject.SetActive(false);
+            tagObtain.SetActive(true);
+            tagChest.SetActive(false);
+            tagEquip.SetActive(true);
+        }
+        else if (selectTag.buyable)
+        {
+            tagBuyBut.transform.parent.gameObject.SetActive(true);
+            tagObtain.SetActive(false);
+            tagChest.SetActive(false);
+            tagBuyBut.text = "Acheter (" + selectTag.price + ")";
+            tagEquip.SetActive(false);
+        }
+        else
+        {
+            tagBuyBut.transform.parent.gameObject.SetActive(false);
+            tagObtain.SetActive(false);
+            tagChest.SetActive(true);
+            tagEquip.SetActive(false);
+        }
+    }
+
+    public void BuyTag ()
+    {
+        if (selectTag != null)
+        {
+            if (server.player.GetUnlockTags().Contains(selectTag.index)) return;
+            if (!selectTag.buyable) return;
+            if (server.player.money >= selectTag.price)
+            {
+                server.player.money -= selectTag.price;
+                server.BuyTag(selectTag.index);
+                SelectTag(selectTag);
+                moneyTxt.text = server.player.money.ToString();
+            }
+            else
+            {
+                return;
+            }
+
+        }
+    }
+
+    public void EquipTag (int where)
+    {
+        if (where > 3) return;
+        if (selectTag != null)
+        {
+            if (server.player.GetUnlockTags().Contains(selectTag.index))
+            {
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().tags[where] = selectTag.index;
+                GameObject.Find("ItemManager").GetComponent<ItemManager>().SaveTags();
+            }
+        }
+    } 
+
+    public void OpenEquipTagMenu ()
+    {
+        int[] tags = GameObject.Find("ItemManager").GetComponent<ItemManager>().tags;
+        ItemsContainer cont = GameObject.Find("Items").GetComponent<ItemsContainer>();
+        if (cont.GetTagByIndex(tags[0]) != null)
+        {
+            tagImg1.sprite = cont.GetTagByIndex(tags[0]).icon;
+            tagTxt1.text = cont.GetTagByIndex(tags[0]).name;
+        }
+
+        if (cont.GetTagByIndex(tags[1]) != null)
+        {
+            tagImg2.sprite = cont.GetTagByIndex(tags[1]).icon;
+            tagTxt2.text = cont.GetTagByIndex(tags[1]).name;
+        }
+
+        if (cont.GetTagByIndex(tags[2]) != null)
+        {
+            tagImg3.sprite = cont.GetTagByIndex(tags[2]).icon;
+            tagTxt3.text = cont.GetTagByIndex(tags[2]).name;
+        }
+
+        if (cont.GetTagByIndex(tags[3]) != null)
+        {
+            tagImg4.sprite = cont.GetTagByIndex(tags[3]).icon;
+            tagTxt4.text = cont.GetTagByIndex(tags[3]).name;
         }
     }
     #endregion

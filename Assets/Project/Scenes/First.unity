@@ -317,12 +317,13 @@ MonoBehaviour:
     unlockcharskin: []
     unlockemote: []
     unlockquote: []
+    unlocktag: []
     unlockavatar: []
     unlockplayerequipmentskin: []
   url: http://socket.bulletfire.fr/
   keepCo: 0
   vcURL: http://admin.bulletfire.fr/launcherapp/checkversion/win
-  versionIdentifier: 65cbfcc3-968e-4ebb-9a5c-bd46cafa8577
+  versionIdentifier: 567991ff-86d5-4838-867c-cb4e8044873f
 --- !u!4 &141381025
 Transform:
   m_ObjectHideFlags: 0
@@ -887,7 +888,7 @@ MonoBehaviour:
   characterSkin: 0
   emotes: 00000000000000000000000000000000
   quotes: 00000000000000000000000000000000
-  tags: 
+  tags: 00000000000000000000000000000000
 --- !u!4 &1718547172
 Transform:
   m_ObjectHideFlags: 0

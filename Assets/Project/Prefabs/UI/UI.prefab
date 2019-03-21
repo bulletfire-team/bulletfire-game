@@ -8216,6 +8216,7 @@ MonoBehaviour:
   - {fileID: 2221829931181446373}
   emoteMenu: {fileID: 38151613000293324}
   quoteMenu: {fileID: 7497252691671261325}
+  tagMenu: {fileID: 7666566482877921560}
   firstName: {fileID: 114526212490634374}
   secondName: {fileID: 114470417257197494}
   firstAmmo: {fileID: 114078567286220786}

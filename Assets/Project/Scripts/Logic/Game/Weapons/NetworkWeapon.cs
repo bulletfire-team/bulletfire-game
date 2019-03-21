@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class NetworkWeapon : MonoBehaviour
 {
@@ -27,12 +28,15 @@ public class NetworkWeapon : MonoBehaviour
         */
         if(skin != -1)
         {
+            print("Skin ok");
             foreach (Transform item in transform)
             {
                 Renderer r = item.GetComponent<Renderer>();
+                print(item);
                 if(r != null)
                 {
-                    r.material.mainTexture = GetComponent<WeaponHolder>().weapon.GetWeaponSkinByIndex(skin).tex;
+                    print("Put skin");
+                    r.material.SetTexture("_BaseColorMap", GetComponent<WeaponHolder>().weapon.GetWeaponSkinByIndex(skin).tex);
                 }
             }
         }

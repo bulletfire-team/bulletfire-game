@@ -27,6 +27,8 @@ public class PlayerEntity {
 
     public List<UnlockQuote> unlockquote = new List<UnlockQuote>();
 
+    public List<UnlockTag> unlocktag = new List<UnlockTag>();
+
     public List<UnlockAvatar> unlockavatar = new List<UnlockAvatar>();
 
     public List<UnlockPlayerEquipmentSkin> unlockplayerequipmentskin = new List<UnlockPlayerEquipmentSkin>();
@@ -63,6 +65,16 @@ public class PlayerEntity {
         foreach (UnlockQuote item in unlockquote)
         {
             li.Add(item.Quote_ID);
+        }
+        return li;
+    }
+
+    public List<int> GetUnlockTags()
+    {
+        List<int> li = new List<int>();
+        foreach (UnlockTag item in unlocktag)
+        {
+            li.Add(item.Tag_ID);
         }
         return li;
     }
@@ -124,5 +136,16 @@ public class UnlockQuote
     public UnlockQuote (int quote)
     {
         Quote_ID = quote;
+    }
+}
+
+[System.Serializable]
+public class UnlockTag
+{
+    public int Tag_ID;
+
+    public UnlockTag (int tag)
+    {
+        Tag_ID = tag;
     }
 }

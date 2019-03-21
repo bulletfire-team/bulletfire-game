@@ -167,6 +167,12 @@ public class Server : MonoBehaviour
         socket.Emit("BuyQuote", quote);
     }
 
+    public void BuyTag (int tag)
+    {
+        player.unlocktag.Add(new UnlockTag(tag));
+        //socket.Emit("BuyTag", tag);
+    }
+
     public void OpenChest ()
     {
         socket.Emit("OpenBox");

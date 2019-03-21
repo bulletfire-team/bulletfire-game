@@ -23,11 +23,13 @@ public class PlayerQuote : NetworkBehaviour
 
     #region Network
     #region Play
+    [Command]
     public void CmdPlayQuote(int index)
     {
         RpcPlayQuote(index);
     }
 
+    [ClientRpc]
     public void RpcPlayQuote(int index)
     {
         AudioClip clip = attr.itemsContainer.GetQuoteByIndex(index).clip;

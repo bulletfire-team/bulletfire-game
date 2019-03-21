@@ -205,13 +205,16 @@ public class GameManager : NetworkBehaviour {
         {
             foreach (PlayerObj player in players)
             {
-                player.player.TargetEndGame(player.player.connectionToClient, redScore == 5);
+                bool isRed = player.player.team == "red";
+                bool doWin = (redScore == 5 && isRed || blueScore == 5 && !isRed);
+                player.player.TargetEndGame(player.player.connectionToClient, doWin);
             }
             EndGame(redScore == 5);
             return;
         }
         foreach (PlayerObj player in players)
         {
+            player.player.GetComponent<NetworkPlayer>().CmdRespawn();
             player.player.TargetBeginRound(player.player.connectionToClient, redScore, blueScore, playerAliveRedTeam, playerAliveBlueTeam);
         }
     }

@@ -47,11 +47,13 @@ public class PlayerEmote : NetworkBehaviour
 
     #region Network
     #region Play
+    [Command]
     public void CmdPlayEmote (int index)
     {
         RpcPlayEmote(index);
     }
 
+    [ClientRpc]
     public void RpcPlayEmote (int index)
     {
         AnimationClip clip = attr.itemsContainer.GetEmoteByIndex(index).clip;
@@ -71,11 +73,13 @@ public class PlayerEmote : NetworkBehaviour
     #endregion
 
     #region Stop
+    [Command]
     public void CmdStopEmote ()
     {
         RpcStopEmote();
     }
 
+    [ClientRpc]
     public void RpcStopEmote ()
     {
         StopCoroutine(WaitEmote(null));
